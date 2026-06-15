@@ -65,6 +65,7 @@
             <h2>Startsida</h2>
             <a href="#newMarking" class="button">Ny märkning</a>
             <a href="#newControl" class="button">Ny kontroll</a>
+            <a href="#locations" class="button">Lokaler</a>
             <a href="#ringStock" class="button">Ringförråd</a>
             <a href="#reports" class="button">Rapporter</a>
         </div>
@@ -107,8 +108,21 @@
                 <input type="date" id="controlDate" name="controlDate" required>
                 <label for="controlLocation">Lokal</label>
                 <input type="text" id="controlLocation" name="controlLocation">
+                <label for="controlWeight">Vikt (g)</label>
+                <input type="number" id="controlWeight" name="controlWeight">
+                <label for="controlWing">Vinge (mm)</label>
+                <input type="number" id="controlWing" name="controlWing">
+                <label for="controlBill">Näbblängd (mm)</label>
+                <input type="number" id="controlBill" name="controlBill">
                 <button type="submit">Spara</button>
             </form>
+            <button onclick="goHome()">Hem</button>
+        </div>
+
+        <!-- Locations page -->
+        <div id="locations" style="display:none;">
+            <h2>Lokaler</h2>
+            <ul id="locationList"></ul>
             <button onclick="goHome()">Hem</button>
         </div>
 
@@ -127,7 +141,7 @@
 
     <script>
         function showPage(pageId) {
-            ['home','newMarking','newControl','ringStock','reports'].forEach(function(id) {
+            ['home','newMarking','newControl','ringStock','reports','locations'].forEach(function(id) {
                 document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
             });
         }
@@ -160,6 +174,38 @@
             alert('Kontroll sparad (prototyp).');
             goHome();
         });
+
+        // Populate locations list from predefined array. In a full implementation this could be loaded from a database or Excel file.
+        (function populateLocations() {
+            // Extracted from the user's Excel file (2025 and 2026 sheets) and combined with
+            // earlier examples. Each entry is trimmed and capitalised. Duplicate spellings
+            // (e.g. Fröjerum/Fröjerum ) have been normalised.
+            var localities = [
+                'Aspa',
+                'FTIN5',
+                'Borgsholm',
+                'Braskens',
+                'Fröjerum',
+                'Herrebro',
+                'Kaga',
+                'Klinga',
+                'Kniberga',
+                'Knivberga',
+                'Löt',
+                'Mellby',
+                'Resebro',
+                'Åsebro',
+                'Össby'
+            ];
+            var ul = document.getElementById('locationList');
+            if (ul) {
+                localities.forEach(function(loc) {
+                    var li = document.createElement('li');
+                    li.textContent = loc;
+                    ul.appendChild(li);
+                });
+            }
+        })();
     </script>
 </body>
 </html>
