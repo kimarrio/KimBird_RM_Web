@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>KimBird RM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #007ACC;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        main {
+            padding: 1rem;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
+            border-radius: 8px;
+            text-align: center;
+            background-color: #007ACC;
+            color: #fff;
+            text-decoration: none;
+        }
+        .button:active {
+            background-color: #005fa3;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        form button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KimBird RM</h1>
+    </header>
+    <main>
+        <div id="home">
+            <h2>Startsida</h2>
+            <a href="#newMarking" class="button">Ny märkning</a>
+            <a href="#newControl" class="button">Ny kontroll</a>
+            <a href="#ringStock" class="button">Ringförråd</a>
+            <a href="#reports" class="button">Rapporter</a>
+        </div>
+
+        <div id="newMarking" style="display:none;">
+            <h2>Ny märkning</h2>
+            <form id="markForm">
+                <label for="art">Art</label>
+                <select id="art" name="art">
+                    <option value="tornfalk">Tornfalk</option>
+                    <option value="kungsfiskare">Kungsfiskare</option>
+                    <option value="tofsvipa">Tofsvipa</option>
+                    <option value="dvergbeckasin">Dvärgbeckasin</option>
+                    <option value="enklebeckasin">Enkelbeckasin</option>
+                    <option value="skogssnäppa">Skogssnäppa</option>
+                </select>
+                <label for="ring">Ringnummer</label>
+                <input type="text" id="ring" name="ring" required>
+                <label for="date">Datum</label>
+                <input type="date" id="date" name="date" required>
+                <label for="location">Lokal</label>
+                <input type="text" id="location" name="location">
+                <label for="weight">Vikt (g)</label>
+                <input type="number" id="weight" name="weight">
+                <label for="wing">Vinge (mm)</label>
+                <input type="number" id="wing" name="wing">
+                <label for="bill" id="billLabel" style="display:none;">Näbblängd (mm)</label>
+                <input type="number" id="bill" name="bill" style="display:none;">
+                <button type="submit">Spara</button>
+            </form>
+            <button onclick="goHome()">Hem</button>
+        </div>
+
+        <div id="newControl" style="display:none;">
+            <h2>Ny kontroll</h2>
+            <form id="controlForm">
+                <label for="controlRing">Ringnummer</label>
+                <input type="text" id="controlRing" name="controlRing" required>
+                <label for="controlDate">Datum</label>
+                <input type="date" id="controlDate" name="controlDate" required>
+                <label for="controlLocation">Lokal</label>
+                <input type="text" id="controlLocation" name="controlLocation">
+                <button type="submit">Spara</button>
+            </form>
+            <button onclick="goHome()">Hem</button>
+        </div>
+
+        <div id="ringStock" style="display:none;">
+            <h2>Ringförråd</h2>
+            <p>Denna sektion visar dina ringar och deras status.</p>
+            <button onclick="goHome()">Hem</button>
+        </div>
+
+        <div id="reports" style="display:none;">
+            <h2>Rapporter</h2>
+            <p>Månadsrapport och årsrapport kommer snart.</p>
+            <button onclick="goHome()">Hem</button>
+        </div>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            ['home','newMarking','newControl','ringStock','reports'].forEach(function(id) {
+                document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
+            });
+        }
+        function goHome() { showPage('home'); }
+        document.querySelectorAll('a.button').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('href').substring(1);
+                showPage(page);
+            });
+        });
+        document.getElementById('art').addEventListener('change', function() {
+            var billLabel = document.getElementById('billLabel');
+            var billInput = document.getElementById('bill');
+            if(['dvergbeckasin','enklebeckasin','skogssnäppa'].includes(this.value)) {
+                billLabel.style.display = 'block';
+                billInput.style.display = 'block';
+            } else {
+                billLabel.style.display = 'none';
+                billInput.style.display = 'none';
+            }
+        });
+        document.getElementById('markForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Märkning sparad (prototyp).');
+            goHome();
+        });
+        document.getElementById('controlForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Kontroll sparad (prototyp).');
+            goHome();
+        });
+    </script>
+</body>
+</html>
