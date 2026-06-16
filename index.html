@@ -37,7 +37,24 @@
         .button:active {
             background-color: #005fa3;
         }
-        form input, form select {
+        form input,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        /* Make form labels block-level so they appear on separate lines */
+        form label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* ensure textareas and file inputs align with other inputs */
+        form textarea,
+        form input[type="file"] {
             width: 100%;
             padding: 10px;
             margin: 5px 0 10px;
@@ -53,6 +70,13 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+        }
+
+        /* small text under art field for species info */
+        .species-info {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #555;
         }
 
         /* Align save and home buttons in a row and style them consistently */
@@ -98,25 +122,21 @@
         <div id="newMarking" style="display:none;">
             <h2>Ny märkning</h2>
             <form id="markForm">
-                <label for="art">Art</label>
-                <select id="art" name="art">
-                    <option value="tornfalk">Tornfalk</option>
-                    <option value="kungsfiskare">Kungsfiskare</option>
-                    <option value="tofsvipa">Tofsvipa</option>
-                    <option value="dvergbeckasin">Dvärgbeckasin</option>
-                    <option value="enklebeckasin">Enkelbeckasin</option>
-                    <option value="skogssnäppa">Skogssnäppa</option>
-                </select>
-                <label for="ring">Ringnummer</label>
-                <input type="text" id="ring" name="ring" required>
-                <label for="date">Datum</label>
-                <input type="date" id="date" name="date" required>
-                <label for="location">Lokal</label>
-                <input type="text" id="location" name="location">
+                <label for="markRing">Ringnummer</label>
+                <input type="text" id="markRing" name="ring" required>
 
-                <!-- Age, time, gender and comment fields for new marking -->
-                <label for="age">Ålder</label>
-                <select id="age" name="age">
+                <label for="markDate">Datum</label>
+                <input type="date" id="markDate" name="date" required>
+
+                <label for="markTime">Tid</label>
+                <input type="time" id="markTime" name="time">
+
+                <label for="markArt">Art</label>
+                <input type="text" id="markArt" name="art" list="speciesList" autocomplete="off">
+                <div id="markSpeciesInfo" class="species-info"></div>
+
+                <label for="markAge">Ålder</label>
+                <select id="markAge" name="age">
                     <option value="00">00</option>
                     <option value="1+">1+</option>
                     <option value="1K">1K</option>
@@ -125,51 +145,56 @@
                     <option value="3+">3+</option>
                     <option value="3K">3K</option>
                 </select>
-                <label for="markTime">Tid</label>
-                <input type="time" id="markTime" name="markTime">
-                <label for="gender">Kön</label>
-                <select id="gender" name="gender">
-                    <option value="">Välj</option>
-                    <option value="hona">Hona</option>
-                    <option value="hane">Hane</option>
-                </select>
-                <label for="comment">Kommentar</label>
-                <textarea id="comment" name="comment" rows="3"></textarea>
 
-                <label for="weight">Vikt (g)</label>
-                <input type="number" id="weight" name="weight">
-                <label for="wing">Vinge (mm)</label>
-                <input type="number" id="wing" name="wing">
-                <label for="bill" id="billLabel" style="display:none;">Näbblängd (mm)</label>
-                <input type="number" id="bill" name="bill" style="display:none;">
+                <label for="markMarker">Märkare</label>
+                <select id="markMarker" name="marker"></select>
+                <button type="button" id="addMarkerBtn" style="margin-bottom:10px;">Ny märkare</button>
+
+                <label for="markLocation">Plats</label>
+                <input type="text" id="markLocation" name="location">
+
+                <label for="markWing">Vinge (mm)</label>
+                <input type="number" id="markWing" name="wing">
+
+                <label for="markWeight">Vikt (g)</label>
+                <input type="number" id="markWeight" name="weight">
+
+                <label for="markBill" id="markBillLabel" style="display:none;">Näbblängd (mm)</label>
+                <input type="number" id="markBill" name="bill" style="display:none;">
+
+                <label for="markImage">Lägg till bild</label>
+                <input type="file" id="markImage" name="image" accept="image/*">
+
+                <label><input type="checkbox" id="markStar" name="star"> Följ upp</label>
+
+                <label for="markComment">Kommentar</label>
+                <textarea id="markComment" name="comment" rows="3"></textarea>
+
                 <div class="button-row">
                     <button type="submit" class="save-btn">Spara</button>
                     <button type="button" class="home-btn" onclick="goHome()">Hem</button>
                 </div>
             </form>
-            <!-- Removed standalone home button -->
         </div>
 
         <div id="newControl" style="display:none;">
             <h2>Ny kontroll</h2>
             <form id="controlForm">
-                <label for="controlArt">Art</label>
-                <select id="controlArt" name="controlArt">
-                    <option value="tornfalk">Tornfalk</option>
-                    <option value="kungsfiskare">Kungsfiskare</option>
-                    <option value="tofsvipa">Tofsvipa</option>
-                    <option value="dvergbeckasin">Dvärgbeckasin</option>
-                    <option value="enklebeckasin">Enkelbeckasin</option>
-                    <option value="skogssnäppa">Skogssnäppa</option>
-                </select>
                 <label for="controlRing">Ringnummer</label>
-                <input type="text" id="controlRing" name="controlRing" required>
+                <input type="text" id="controlRing" name="ring" required>
+
                 <label for="controlDate">Datum</label>
-                <input type="date" id="controlDate" name="controlDate" required>
+                <input type="date" id="controlDate" name="date" required>
+
                 <label for="controlTime">Tid</label>
-                <input type="time" id="controlTime" name="controlTime">
+                <input type="time" id="controlTime" name="time">
+
+                <label for="controlArt">Art</label>
+                <input type="text" id="controlArt" name="art" list="speciesList" autocomplete="off">
+                <div id="controlSpeciesInfo" class="species-info"></div>
+
                 <label for="controlAge">Ålder</label>
-                <select id="controlAge" name="controlAge">
+                <select id="controlAge" name="age">
                     <option value="00">00</option>
                     <option value="1+">1+</option>
                     <option value="1K">1K</option>
@@ -178,28 +203,36 @@
                     <option value="3+">3+</option>
                     <option value="3K">3K</option>
                 </select>
-                <label for="controlGender">Kön</label>
-                <select id="controlGender" name="controlGender">
-                    <option value="">Välj</option>
-                    <option value="hona">Hona</option>
-                    <option value="hane">Hane</option>
-                </select>
-                <label for="controlLocation">Lokal</label>
-                <input type="text" id="controlLocation" name="controlLocation">
-                <label for="controlWeight">Vikt (g)</label>
-                <input type="number" id="controlWeight" name="controlWeight">
+
+                <label for="controlMarker">Märkare</label>
+                <select id="controlMarker" name="marker"></select>
+                <button type="button" id="addControlMarkerBtn" style="margin-bottom:10px;">Ny märkare</button>
+
+                <label for="controlLocation">Plats</label>
+                <input type="text" id="controlLocation" name="location">
+
                 <label for="controlWing">Vinge (mm)</label>
-                <input type="number" id="controlWing" name="controlWing">
+                <input type="number" id="controlWing" name="wing">
+
+                <label for="controlWeight">Vikt (g)</label>
+                <input type="number" id="controlWeight" name="weight">
+
                 <label for="controlBill" id="controlBillLabel" style="display:none;">Näbblängd (mm)</label>
-                <input type="number" id="controlBill" name="controlBill" style="display:none;">
+                <input type="number" id="controlBill" name="bill" style="display:none;">
+
+                <label for="controlImage">Lägg till bild</label>
+                <input type="file" id="controlImage" name="image" accept="image/*">
+
+                <label><input type="checkbox" id="controlStar" name="star"> Följ upp</label>
+
                 <label for="controlComment">Kommentar</label>
-                <textarea id="controlComment" name="controlComment" rows="3"></textarea>
+                <textarea id="controlComment" name="comment" rows="3"></textarea>
+
                 <div class="button-row">
                     <button type="submit" class="save-btn">Spara</button>
                     <button type="button" class="home-btn" onclick="goHome()">Hem</button>
                 </div>
             </form>
-            <!-- Removed standalone home button -->
         </div>
 
         <!-- Locations page -->
@@ -220,6 +253,9 @@
             <p>Månadsrapport och årsrapport kommer snart.</p>
             <button onclick="goHome()">Hem</button>
         </div>
+
+        <!-- Datalist for species autocomplete. This list is populated via JavaScript -->
+        <datalist id="speciesList"></datalist>
     </main>
 
     <script>
@@ -236,33 +272,100 @@
                 showPage(page);
             });
         });
-        document.getElementById('art').addEventListener('change', function() {
-            var billLabel = document.getElementById('billLabel');
-            var billInput = document.getElementById('bill');
-            if(['dvergbeckasin','enklebeckasin','skogssnäppa'].includes(this.value)) {
-                billLabel.style.display = 'block';
-                billInput.style.display = 'block';
-            } else {
-                billLabel.style.display = 'none';
-                billInput.style.display = 'none';
-            }
+        // Data for species: name, abbreviation and recommended ring sizes (type1, type2)
+        var speciesData = /* Generated from Excel art list with ring types */ [
+            {"name":"Smålom","abbr":"SMLOM","type1":"91","type2":""},{"name":"Storlom","abbr":"STLOM","type1":"92","type2":""},{"name":"Smådopping","abbr":"SMDOP","type1":"7","type2":""},{"name":"Skäggdopping","abbr":"SKDOP","type1":"91","type2":""},{"name":"Gråhakedopping","abbr":"GRDOP","type1":"91","type2":""},{"name":"Svarthakedopping","abbr":"POAUR","type1":"8","type2":""},{"name":"Svarthalsad dopping","abbr":"PONIG","type1":"8","type2":""},{"name":"Stormfågel","abbr":"STFÅG","type1":"7","type2":""},{"name":"Stormsvala","abbr":"STSVA","type1":"2","type2":""},{"name":"Havssula","abbr":"HASUL","type1":"92","type2":""},{"name":"Storskarv","abbr":"PHCAR","type1":"92","type2":""},{"name":"Rördrom","abbr":"RÖDRO","type1":"91","type2":""},{"name":"Gråhäger","abbr":"HÄGER","type1":"92","type2":"91"},{"name":"Vit stork","abbr":"VSSTO","type1":"92,5","type2":""},{"name":"Knölsvan","abbr":"KNÖLS","type1":"99","type2":""},{"name":"Mindre sångsvan","abbr":"MINSÅ","type1":"99","type2":""},{"name":"Sångsvan","abbr":"SÅNGS","type1":"99","type2":""},{"name":"Sädgås","abbr":"SÄDGÅ","type1":"92,5","type2":""},{"name":"Spetsbergsgås","abbr":"SPEGÅ","type1":"91","type2":""},{"name":"Bläsgås","abbr":"BLÄSG","type1":"91","type2":""},{"name":"Fjällgås","abbr":"FJÄLLG","type1":"91","type2":""},{"name":"Grågås","abbr":"GRÅGÅ","type1":"92,5","type2":"92"},{"name":"Kanadagås","abbr":"KANAG","type1":"92,5","type2":""},{"name":"Vitkindadgås","abbr":"VKGÅS","type1":"91","type2":""},{"name":"Prutgås","abbr":"PRUTG","type1":"91","type2":""},{"name":"Gravand","abbr":"GRAVA","type1":"90","type2":""},{"name":"Bläsand","abbr":"BLÄSA","type1":"8","type2":""},{"name":"Snatterand","abbr":"SNATT","type1":"8","type2":""},{"name":"Kricka","abbr":"KRICK","type1":"7","type2":""},{"name":"Gräsand","abbr":"GRÄSA","type1":"90","type2":""},{"name":"Stjärtand","abbr":"STJÄT","type1":"90","type2":"8"},{"name":"Årta","abbr":"ÅRTA","type1":"7","type2":""},{"name":"Skedand","abbr":"SKEDA","type1":"8","type2":""},{"name":"Brunand","abbr":"BRUNA","type1":"90","type2":""},{"name":"Vigg","abbr":"VIGG","type1":"8","type2":"90"},{"name":"Bergand","abbr":"BERGA","type1":"8","type2":""},{"name":"Ejder","abbr":"EJDER","type1":"91","type2":""},{"name":"Alfågel","abbr":"ALFÅG","type1":"8","type2":""},{"name":"Sjöorre","abbr":"SJÖOR","type1":"90","type2":""},{"name":"Svärta","abbr":"SVÄRT","type1":"90","type2":""},{"name":"Knipa","abbr":"KNIPA","type1":"90","type2":"8"},{"name":"Salskrake","abbr":"SALS","type1":"8","type2":""},{"name":"Småskrake","abbr":"SMÅSK","type1":"90","type2":""},{"name":"Storskrake","abbr":"STOSK","type1":"91","type2":""},{"name":"Bivråk","abbr":"BIVRÅ","type1":"90","type2":"91"},{"name":"Brun glada","abbr":"BRUGL","type1":"90","type2":""},{"name":"Röd glada","abbr":"RÖDGL","type1":"90","type2":""},{"name":"Havsörn","abbr":"HAVSÖ","type1":"94","type2":"99"},{"name":"Brun kärrhök","abbr":"BRUNK","type1":"8","type2":"90"},{"name":"Blå kärrhök","abbr":"BLÅKÄ","type1":"7","type2":"8"},{"name":"Stäpphök","abbr":"STÄPP","type1":"6","type2":""},{"name":"Ängshök","abbr":"ÄNGSH","type1":"7","type2":"6"},{"name":"Duvhök","abbr":"DUVHÖ","type1":"90","type2":"91"},{"name":"Sparvhök","abbr":"SPARV","type1":"5","type2":"6"},{"name":"Ormvråk","abbr":"ORMVR","type1":"90","type2":""},{"name":"Fjällvråk","abbr":"FJÄLLV","type1":"91","type2":""},{"name":"Kungsörn","abbr":"KUNGSÖ","type1":"94","type2":"99"},{"name":"Fiskgjuse","abbr":"FISKGJ","type1":"92","type2":""},{"name":"Tornfalk","abbr":"TOFAL","type1":"7","type2":"6"},{"name":"Aftonfalk","abbr":"AFTOF","type1":"5","type2":""},{"name":"Stenfalk","abbr":"STENF","type1":"6","type2":""},{"name":"Lärkfalk","abbr":"LÄRKF","type1":"6","type2":""},{"name":"Jaktfalk","abbr":"JAKTF","type1":"91","type2":""},{"name":"Pilgrimsfalk","abbr":"PILGR","type1":"90","type2":""},{"name":"Järpe","abbr":"JÄRPE","type1":"7","type2":""},{"name":"Dalripa","abbr":"DALRI","type1":"8","type2":""},{"name":"Fjällripa","abbr":"FJÄLLRI","type1":"8","type2":""},{"name":"Orre","abbr":"ORRE","type1":"90","type2":"8"},{"name":"Tjäder","abbr":"TJÄDER","type1":"93","type2":"92"},{"name":"Rapphöna","abbr":"RAPPH","type1":"7","type2":""},{"name":"Vaktel","abbr":"VAKTEL","type1":"5","type2":""},{"name":"Vattenrall","abbr":"VATRA","type1":"6","type2":"5"},{"name":"Småfläckig sumphöna","abbr":"SMÅSU","type1":"5","type2":""},{"name":"Mindre sumphöna","abbr":"MINSU","type1":"5","type2":""},{"name":"Dvärgsumphöna","abbr":"DVÄRGSU","type1":"5","type2":""},{"name":"Kornknarr","abbr":"KORNK","type1":"6","type2":""},{"name":"Rörhöna","abbr":"RÖRHÖ","type1":"8","type2":""},{"name":"Sothöna","abbr":"SOTHÖ","type1":"90","type2":""},{"name":"Trana","abbr":"TRANA","type1":"93","type2":""},{"name":"Strandskata","abbr":"STRANS","type1":"8","type2":""},{"name":"Skärfläcka","abbr":"SKÄRFL","type1":"7","type2":"6"},{"name":"Mindre strandpipare","abbr":"MSTPI","type1":"2","type2":""},{"name":"Större strandpipare","abbr":"STSTR","type1":"3","type2":""},{"name":"Svartbent strandpipare","abbr":"SVBSTP","type1":"3","type2":""},{"name":"Fjällpipare","abbr":"FJÄLLP","type1":"4","type2":""},{"name":"Ljungpipare","abbr":"LJUNGP","type1":"5","type2":""},{"name":"Kustpipare","abbr":"KUSTPI","type1":"5","type2":""},{"name":"Tofsvipa","abbr":"TOVIP","type1":"6","type2":""},{"name":"Kustsnäppa","abbr":"KUSTSN","type1":"4","type2":""},{"name":"Sandlöpare","abbr":"SANDL","type1":"3","type2":""},{"name":"Småsnäppa","abbr":"SMÅSN","type1":"2","type2":""},{"name":"Mosnäppa","abbr":"MOSNÄ","type1":"2","type2":""},{"name":"Spovsnäppa","abbr":"SPOVSN","type1":"3","type2":""},{"name":"Skärsnäppa","abbr":"SKÄRSN","type1":"4","type2":""},{"name":"Kärrsnäppa","abbr":"KÄRSN","type1":"3","type2":""},{"name":"Myrsnäppa","abbr":"MYRSN","type1":"3","type2":""},{"name":"Brushane","abbr":"BRUSH","type1":"6","type2":"5"},{"name":"Dvärgbeckasin","abbr":"LYMIN","type1":"4","type2":""},{"name":"Enkelbeckasin","abbr":"ENBEC","type1":"4","type2":""},{"name":"Dubbelbeckasin","abbr":"DUBBEC","type1":"5","type2":""},{"name":"Morkulla","abbr":"MORKUL","type1":"6","type2":""},{"name":"Rödspov","abbr":"RÖDSP","type1":"7","type2":""},{"name":"Myrspov","abbr":"MYRSP","type1":"6","type2":""},{"name":"Småspov","abbr":"SMÅSP","type1":"7","type2":""},{"name":"Storspov","abbr":"STORSP","type1":"8","type2":""},{"name":"Svartsnäppa","abbr":"SVARTA","type1":"5","type2":""},{"name":"Grönbena","abbr":"GRÖNBE","type1":"4","type2":""},{"name":"Roskarl","abbr":"ROSKA","type1":"4","type2":""},{"name":"Smalnäbbad simsnäppa","abbr":"SMALSI","type1":"3","type2":""},{"name":"Kustlabb","abbr":"KUSTLAB","type1":"7","type2":""},{"name":"Fjällabb","abbr":"FJÄLLAB","type1":"6","type2":""},{"name":"Dvärgmås","abbr":"DVÄRGMA","type1":"4","type2":""},{"name":"Skrattmås","abbr":"SKRAT","type1":"6","type2":""},{"name":"Fiskmås","abbr":"FISKMA","type1":"7","type2":""},{"name":"Silltrut","abbr":"SILLTR","type1":"8","type2":""},{"name":"Gråtrut","abbr":"GRÅTRU","type1":"90S","type2":""},{"name":"Praktärla","abbr":"PRAKTÄ","type1":"0","type2":""} ];
+
+        // Populate species datalist options
+        var speciesListElement = document.getElementById('speciesList');
+        speciesData.forEach(function(item) {
+            var opt = document.createElement('option');
+            opt.value = item.name;
+            // Some browsers show the label for datalist options
+            opt.label = item.name + ' (' + item.abbr + ')';
+            speciesListElement.appendChild(opt);
         });
 
-        // Show/hide bill field for control depending on selected species
-        var controlArtSelect = document.getElementById('controlArt');
-        if (controlArtSelect) {
-            controlArtSelect.addEventListener('change', function() {
-                var billLabel = document.getElementById('controlBillLabel');
-                var billInput = document.getElementById('controlBill');
-                if(['dvergbeckasin','enklebeckasin','skogssnäppa'].includes(this.value)) {
-                    billLabel.style.display = 'block';
-                    billInput.style.display = 'block';
+        // Define markers list and populate marker selects
+        var markers = ['Kim'];
+        function populateMarkerSelects() {
+            var selects = [];
+            var markSel = document.getElementById('markMarker');
+            if (markSel) selects.push(markSel);
+            var controlSel = document.getElementById('controlMarker');
+            if (controlSel) selects.push(controlSel);
+            selects.forEach(function(sel) {
+                sel.innerHTML = '';
+                markers.forEach(function(m) {
+                    var opt = document.createElement('option');
+                    opt.value = m;
+                    opt.textContent = m;
+                    sel.appendChild(opt);
+                });
+            });
+        }
+        populateMarkerSelects();
+        // Add new marker events
+        var addMarkBtn = document.getElementById('addMarkerBtn');
+        if (addMarkBtn) {
+            addMarkBtn.addEventListener('click', function() {
+                var name = prompt('Ange märkare:');
+                if (name) {
+                    markers.push(name);
+                    populateMarkerSelects();
+                    document.getElementById('markMarker').value = name;
+                }
+            });
+        }
+        var addControlMarkBtn = document.getElementById('addControlMarkerBtn');
+        if (addControlMarkBtn) {
+            addControlMarkBtn.addEventListener('click', function() {
+                var name = prompt('Ange märkare:');
+                if (name) {
+                    markers.push(name);
+                    populateMarkerSelects();
+                    document.getElementById('controlMarker').value = name;
+                }
+            });
+        }
+
+        // Species info update and bill field toggle
+        function updateSpeciesInfo(inputId, infoId, billLabelId, billInputId) {
+            var input = document.getElementById(inputId);
+            var infoDiv = document.getElementById(infoId);
+            var billLabel = document.getElementById(billLabelId);
+            var billInput = document.getElementById(billInputId);
+            if (!input) return;
+            input.addEventListener('input', function() {
+                var val = input.value.trim();
+                var lower = val.toLowerCase();
+                var sp = speciesData.find(function(item) {
+                    return item.name.toLowerCase() === lower;
+                });
+                if (sp) {
+                    var ring = sp.type1;
+                    if (sp.type2 && sp.type2.trim() !== '') {
+                        ring = ring + ' (' + sp.type2 + ')';
+                    }
+                    infoDiv.textContent = sp.abbr + ' – Rek. ring: ' + ring;
+                    // Determine if bill measurement should be shown
+                    var billSpecies = ['dvärgbeckasin','enkelbeckasin','skogssnäppa'];
+                    if (billSpecies.includes(lower)) {
+                        billLabel.style.display = 'block';
+                        billInput.style.display = 'block';
+                    } else {
+                        billLabel.style.display = 'none';
+                        billInput.style.display = 'none';
+                    }
                 } else {
+                    infoDiv.textContent = '';
                     billLabel.style.display = 'none';
                     billInput.style.display = 'none';
                 }
             });
         }
+        updateSpeciesInfo('markArt','markSpeciesInfo','markBillLabel','markBill');
+        updateSpeciesInfo('controlArt','controlSpeciesInfo','controlBillLabel','controlBill');
         document.getElementById('markForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Märkning sparad (prototyp).');
@@ -295,7 +398,10 @@
                 'Resebro',
                 'Åsebro',
                 'Össby'
-            ];
+        ];
+        // Add any additional species that were omitted from the generated list
+        speciesData.push({name:'Kungsfiskare', abbr:'KUFIS', type1:'3', type2:''});
+        speciesData.push({name:'Skogssnäppa', abbr:'TROCH', type1:'4', type2:''});
             var ul = document.getElementById('locationList');
             if (ul) {
                 localities.forEach(function(loc) {
