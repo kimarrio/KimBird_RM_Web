@@ -54,6 +54,31 @@
             cursor: pointer;
             font-size: 16px;
         }
+
+        /* Align save and home buttons in a row and style them consistently */
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .button-row .save-btn,
+        .button-row .home-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+        .button-row .save-btn {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .button-row .home-btn {
+            background-color: #dc3545;
+            color: #fff;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -88,35 +113,93 @@
                 <input type="date" id="date" name="date" required>
                 <label for="location">Lokal</label>
                 <input type="text" id="location" name="location">
+
+                <!-- Age, time, gender and comment fields for new marking -->
+                <label for="age">Ålder</label>
+                <select id="age" name="age">
+                    <option value="00">00</option>
+                    <option value="1+">1+</option>
+                    <option value="1K">1K</option>
+                    <option value="2+">2+</option>
+                    <option value="2K">2K</option>
+                    <option value="3+">3+</option>
+                    <option value="3K">3K</option>
+                </select>
+                <label for="markTime">Tid</label>
+                <input type="time" id="markTime" name="markTime">
+                <label for="gender">Kön</label>
+                <select id="gender" name="gender">
+                    <option value="">Välj</option>
+                    <option value="hona">Hona</option>
+                    <option value="hane">Hane</option>
+                </select>
+                <label for="comment">Kommentar</label>
+                <textarea id="comment" name="comment" rows="3"></textarea>
+
                 <label for="weight">Vikt (g)</label>
                 <input type="number" id="weight" name="weight">
                 <label for="wing">Vinge (mm)</label>
                 <input type="number" id="wing" name="wing">
                 <label for="bill" id="billLabel" style="display:none;">Näbblängd (mm)</label>
                 <input type="number" id="bill" name="bill" style="display:none;">
-                <button type="submit">Spara</button>
+                <div class="button-row">
+                    <button type="submit" class="save-btn">Spara</button>
+                    <button type="button" class="home-btn" onclick="goHome()">Hem</button>
+                </div>
             </form>
-            <button onclick="goHome()">Hem</button>
+            <!-- Removed standalone home button -->
         </div>
 
         <div id="newControl" style="display:none;">
             <h2>Ny kontroll</h2>
             <form id="controlForm">
+                <label for="controlArt">Art</label>
+                <select id="controlArt" name="controlArt">
+                    <option value="tornfalk">Tornfalk</option>
+                    <option value="kungsfiskare">Kungsfiskare</option>
+                    <option value="tofsvipa">Tofsvipa</option>
+                    <option value="dvergbeckasin">Dvärgbeckasin</option>
+                    <option value="enklebeckasin">Enkelbeckasin</option>
+                    <option value="skogssnäppa">Skogssnäppa</option>
+                </select>
                 <label for="controlRing">Ringnummer</label>
                 <input type="text" id="controlRing" name="controlRing" required>
                 <label for="controlDate">Datum</label>
                 <input type="date" id="controlDate" name="controlDate" required>
+                <label for="controlTime">Tid</label>
+                <input type="time" id="controlTime" name="controlTime">
+                <label for="controlAge">Ålder</label>
+                <select id="controlAge" name="controlAge">
+                    <option value="00">00</option>
+                    <option value="1+">1+</option>
+                    <option value="1K">1K</option>
+                    <option value="2+">2+</option>
+                    <option value="2K">2K</option>
+                    <option value="3+">3+</option>
+                    <option value="3K">3K</option>
+                </select>
+                <label for="controlGender">Kön</label>
+                <select id="controlGender" name="controlGender">
+                    <option value="">Välj</option>
+                    <option value="hona">Hona</option>
+                    <option value="hane">Hane</option>
+                </select>
                 <label for="controlLocation">Lokal</label>
                 <input type="text" id="controlLocation" name="controlLocation">
                 <label for="controlWeight">Vikt (g)</label>
                 <input type="number" id="controlWeight" name="controlWeight">
                 <label for="controlWing">Vinge (mm)</label>
                 <input type="number" id="controlWing" name="controlWing">
-                <label for="controlBill">Näbblängd (mm)</label>
-                <input type="number" id="controlBill" name="controlBill">
-                <button type="submit">Spara</button>
+                <label for="controlBill" id="controlBillLabel" style="display:none;">Näbblängd (mm)</label>
+                <input type="number" id="controlBill" name="controlBill" style="display:none;">
+                <label for="controlComment">Kommentar</label>
+                <textarea id="controlComment" name="controlComment" rows="3"></textarea>
+                <div class="button-row">
+                    <button type="submit" class="save-btn">Spara</button>
+                    <button type="button" class="home-btn" onclick="goHome()">Hem</button>
+                </div>
             </form>
-            <button onclick="goHome()">Hem</button>
+            <!-- Removed standalone home button -->
         </div>
 
         <!-- Locations page -->
@@ -164,6 +247,22 @@
                 billInput.style.display = 'none';
             }
         });
+
+        // Show/hide bill field for control depending on selected species
+        var controlArtSelect = document.getElementById('controlArt');
+        if (controlArtSelect) {
+            controlArtSelect.addEventListener('change', function() {
+                var billLabel = document.getElementById('controlBillLabel');
+                var billInput = document.getElementById('controlBill');
+                if(['dvergbeckasin','enklebeckasin','skogssnäppa'].includes(this.value)) {
+                    billLabel.style.display = 'block';
+                    billInput.style.display = 'block';
+                } else {
+                    billLabel.style.display = 'none';
+                    billInput.style.display = 'none';
+                }
+            });
+        }
         document.getElementById('markForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Märkning sparad (prototyp).');
