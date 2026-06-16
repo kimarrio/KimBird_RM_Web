@@ -1,416 +1,110 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
-    <title>KimBird RM</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #007ACC;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-        main {
-            padding: 1rem;
-        }
-        .button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            border-radius: 8px;
-            text-align: center;
-            background-color: #007ACC;
-            color: #fff;
-            text-decoration: none;
-        }
-        .button:active {
-            background-color: #005fa3;
-        }
-        form input,
-        form select {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        /* Make form labels block-level so they appear on separate lines */
-        form label {
-            display: block;
-            margin-top: 10px;
-        }
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#007acc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="KimBird RM"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="icon-192.png"><title>KimBird RM 0.9e</title><style>
+:root{--blue:#007acc;--green:#1f9d55;--red:#dc3545;--bg:#f4f4f4;--card:#fff;--muted:#666;--border:#ddd}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:#222}header{background:var(--blue);color:#fff;padding:10px 12px;text-align:center;position:sticky;top:0;z-index:5}header h1{font-size:clamp(22px,7vw,34px);line-height:1.05;margin:0;font-weight:800}header .ver{display:block;font-size:clamp(14px,4vw,18px);font-weight:400;margin-top:2px}main{padding:12px;max-width:760px;margin:0 auto 80px}.button,button{display:block;width:100%;padding:15px;margin:9px 0;border:0;border-radius:10px;background:var(--blue);color:#fff;font-size:17px;text-align:center;text-decoration:none;cursor:pointer}.btn-green{background:var(--green)}.btn-red{background:var(--red)}.btn-gray{background:#666}.btn-small{font-size:14px;padding:9px;margin:5px 0}.row{display:flex;gap:8px}.row>*{flex:1}label{display:block;font-weight:700;margin:12px 0 5px}input,select,textarea{width:100%;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:16px;background:#fff}textarea{min-height:78px}.hint,.species-info{font-size:14px;color:var(--muted);margin:4px 0 8px}.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}.card-marking{border-left:6px solid var(--green)}.card-control{border-left:6px solid #f59e0b}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:22px}.stat span{font-size:13px;color:var(--muted)}.card-title{font-weight:700;font-size:16px;margin-bottom:6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:14px}.grid div{border-bottom:1px solid #eee;padding:3px 0}.toast{position:fixed;left:12px;right:12px;bottom:18px;background:#17803d;color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:700;display:none;z-index:10}.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.report-meta{font-size:14px;color:var(--muted);margin:8px 0}.pill{display:inline-block;background:#eef6ff;border:1px solid #cde7ff;padding:3px 7px;border-radius:999px;font-size:13px;margin:2px}.danger-zone{border:1px solid #f2b8b8;background:#fff7f7;border-radius:12px;padding:10px;margin-top:12px}.info-box{background:#eef6ff;border:1px solid #cde7ff;border-radius:12px;padding:12px;margin:10px 0}.loc-card{border-left:6px solid #007acc}.todo-card{border-left:6px solid #8b5cf6}.brood-card{border-left:6px solid #f97316}.parent-box{background:#f8fafc;border:1px solid #d1d5db;border-radius:12px;padding:10px;margin:10px 0}.todo-high{border-left-color:#dc3545}.todo-done{opacity:.65}.gps-box{background:#f8fafc;border:1px dashed #9ca3af;border-radius:12px;padding:10px;margin:8px 0}.brood-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:10px;margin:8px 0}.map-link{display:inline-block;margin-top:6px;color:#007acc;font-weight:700}.hidden-file{display:none}.checkbox-line{display:flex;gap:9px;align-items:center;font-weight:400}.checkbox-line input{width:auto}@media(min-width:620px){.toolbar{grid-template-columns:repeat(4,1fr)}} input,select,textarea,button{touch-action:manipulation}.launch-note{background:#ecfdf5;border:1px solid #86efac;border-radius:12px;padding:12px;margin:10px 0}.sticky-save{position:sticky;bottom:0;background:#fff;padding:8px 0;border-top:1px solid #eee}
 
-        /* ensure textareas and file inputs align with other inputs */
-        form textarea,
-        form input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        form button {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+/* 0.9e Android/Samsung compatibility */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-size:clamp(15px,4vw,18px);overflow-wrap:anywhere}
+main{padding:10px;max-width:760px}
+h2{font-size:clamp(22px,6vw,30px);line-height:1.1;margin:14px 0 10px}
+h3{font-size:clamp(18px,5vw,24px)}
+label{font-size:clamp(15px,4.2vw,18px);line-height:1.2}
+.button,button{font-size:clamp(15px,4.4vw,18px);line-height:1.15;min-height:48px;white-space:normal;word-break:normal}
+input,select,textarea{font-size:16px;line-height:1.25;min-height:48px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:430px){
+  .row{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid{grid-template-columns:1fr}
+  .card{padding:10px}
+}
+</style></head><body><header><h1>KimBird RM <span class="ver">0.9e</span></h1></header><main>
+<section id="home"><h2>Startsida</h2><div class="launch-note"><b>0.9d – skarp mobiltest</b><br>Testa i mobil. Exportera backup efter varje fältdag.</div><div id="homeStats"></div><a href="#newMarking" class="button nav">Ny märkning</a><a href="#newControl" class="button nav">Ny kontroll</a><a href="#reports" class="button nav">Rapporter</a><a href="#broods" class="button nav">Kullar</a><a href="#todo" class="button nav">Att göra <span id="todoCountHome">(0)</span></a><a href="#editSearch" class="button nav">Ändra märkning</a><a href="#markers" class="button nav">Märkare</a><a href="#locations" class="button nav">Lokaler</a><a href="#ringStock" class="button nav">Ringförråd</a><a href="#dataTools" class="button nav">Backup / Import</a><a href="#about" class="button nav">Om testversionen</a><p class="hint">Testversion 0.9e Android-fix. Data sparas lokalt i denna webbläsare. GPX-lokaler kan importeras under Lokaler.</p></section>
+<section id="newMarking" style="display:none"><h2>Ny märkning</h2><form id="markForm"></form></section><section id="newControl" style="display:none"><h2>Ny kontroll</h2><form id="controlForm"></form></section>
+<section id="reports" style="display:none"><h2>Rapporter</h2><label for="reportSearch">Sök i rapporter</label><input id="reportSearch" type="search" placeholder="Ringnummer, art, märkare eller plats"><div class="toolbar"><button class="btn-small" onclick="setReportRange('today')">Dagens</button><button class="btn-small" onclick="setReportRange('week')">Veckans</button><button class="btn-small" onclick="setReportRange('month')">Månadens</button><button class="btn-small" onclick="setReportRange('year')">Årets</button></div><div class="row"><div><label for="reportMonth">Månad</label><select id="reportMonth"></select></div><div><label for="reportYear">År</label><input id="reportYear" type="number" min="2020" max="2100"></div></div><button onclick="applyMonthYearFilter()" class="btn-small">Filtrera månad/år</button><div class="row"><button onclick="exportCSV('visible')" class="btn-green">Exportera visad CSV</button><button onclick="exportCSV('all')" class="btn-gray">Exportera allt CSV</button></div><div class="row"><button onclick="exportCSV('marking')" class="btn-gray">Bara märkningar CSV</button><button onclick="exportCSV('control')" class="btn-gray">Bara kontroller CSV</button></div><div id="reportMeta" class="report-meta"></div><div id="reportList"></div><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="editSearch" style="display:none"><h2>Ändra märkning</h2><label for="searchRing">Ringnummer</label><input id="searchRing" type="text" placeholder="Skriv ringnummer, art eller plats"><button onclick="searchRecordByRing()">Sök</button><div id="searchResults"></div><button onclick="goHome()" class="btn-red">Hem</button></section><section id="editRecord" style="display:none"><h2>Ändra märkning</h2><form id="editForm"></form></section>
+<section id="markers" style="display:none"><h2>Märkare</h2><div class="card"><label>Förnamn</label><input id="markerFirst" type="text"><label>Efternamn</label><input id="markerLast" type="text"><label>Förkortning</label><input id="markerCode" type="text" placeholder="t.ex. KA"><button onclick="saveMarker()" class="btn-green">Spara märkare</button></div><div id="markerList"></div><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="broods" style="display:none"><h2>Kullar</h2>
+<label for="broodSearch">Sök kull</label><input id="broodSearch" type="search" placeholder="Kull-ID, art, plats eller ringnummer">
+<div id="broodMeta" class="report-meta"></div><div id="broodList"></div><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="broodDetail" style="display:none"><h2>Kull</h2><div id="broodDetailContent"></div><button onclick="showPage('broods')" class="btn-gray">Till kullar</button><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="todo" style="display:none"><h2>Att göra</h2>
+<div class="toolbar"><button class="btn-small" onclick="setTodoFilter('open')">Öppna</button><button class="btn-small" onclick="setTodoFilter('high')">Hög prio</button><button class="btn-small" onclick="setTodoFilter('done')">Klara</button><button class="btn-small" onclick="setTodoFilter('all')">Alla</button></div>
+<div id="todoMeta" class="report-meta"></div><div id="todoList"></div><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="locations" style="display:none"><h2>Lokaler</h2>
+<div class="info-box">Välj GPX-fil från mobilen. Om filen inte syns: välj Filer/Mina filer, inte Galleri. Appen läser <b>&lt;name&gt;</b> som lokalkod, <b>&lt;cmt&gt;</b> eller <b>&lt;desc&gt;</b> som lokalnamn, och sparar koordinater.</div>
+<button onclick="document.getElementById('gpxImportFile').click()" class="btn-green">Välj GPX-fil</button>
+<input id="gpxImportFile" class="hidden-file" type="file" onchange="importGPXFile(event)">
+<label for="locationSearch">Sök lokal</label><input id="locationSearch" type="search" placeholder="Kod, namn eller fil">
+<div class="row"><button onclick="exportAllLocationsGPX()" class="btn-gray">Exportera alla GPX</button><button onclick="clearLocations()" class="btn-red">Rensa lokaler</button></div>
+<div id="locationStats" class="report-meta"></div><div id="locationList"></div><button onclick="goHome()" class="btn-red">Hem</button></section><section id="ringStock" style="display:none"><h2>Ringförråd</h2><p>Kommer i senare version.</p><button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="dataTools" style="display:none"><h2>Backup / Import</h2>
+<div class="info-box"><b>Viktigt:</b><br>All data sparas lokalt i denna webbläsare. Exportera backup regelbundet under fälttestet.</div>
+<button onclick="exportBackup()" class="btn-green">Exportera backup (JSON)</button>
+<button onclick="document.getElementById('backupImportFile').click()" class="btn-gray">Importera backup (JSON)</button>
+<input id="backupImportFile" class="hidden-file" type="file" accept=".json,application/json" onchange="importBackupFile(event)">
+<div class="danger-zone"><b>Rensa testdata</b><p class="hint">Raderar alla sparade märkningar och kontroller. Märkare behålls.</p><button onclick="clearRecordsOnly()" class="btn-red">Rensa märkningar/kontroller</button></div>
+<div class="danger-zone"><b>Återställ appdata</b><p class="hint">Raderar märkningar, kontroller och märkare på denna enhet.</p><button onclick="clearAllLocalData()" class="btn-red">Radera allt lokalt</button></div>
+<button onclick="goHome()" class="btn-red">Hem</button></section>
+<section id="about" style="display:none"><h2>Om testversionen</h2><div class="card">
+<div class="card-title">KimBird RM 0.9e</div>
+<p>Syftet är att testa om appen kan ersätta anteckningsbok i fält.</p>
+<p><b>Lagring:</b> data sparas i webbläsaren på den enhet som används.</p>
+<p><b>Backup:</b> exportera JSON-backup efter varje fältdag. Detta är viktigast under test.</p><p><b>Mobil:</b> öppna via Vercel-länken i Safari/Chrome och välj Lägg till på hemskärmen.</p>
+<p><b>Excel:</b> använd CSV-export från Rapporter.</p>
+<p><b>Risk:</b> om webbläsardata rensas kan lokala märkningar försvinna. JSON-backup skyddar mot detta.</p>
+</div><button onclick="goHome()" class="btn-red">Hem</button></section>
+<datalist id="speciesList"></datalist><datalist id="locationDatalist"></datalist></main><div id="toast" class="toast"></div>
+<script>
+const speciesData = [{"name":"Aftonfalk","abbr":"AFFAL","type1":"5","type2":""},{"name":"Alfågel","abbr":"ALFÅG","type1":"8","type2":""},{"name":"Alförrädare","abbr":"ALFÖR","type1":"","type2":""},{"name":"Alkekung","abbr":"ALKUN","type1":"","type2":""},{"name":"Alpjärnsparv","abbr":"ALJÄR","type1":"","type2":""},{"name":"Azurmes","abbr":"AZMES","type1":"","type2":""},{"name":"Backsvala","abbr":"BASVA","type1":"1","type2":""},{"name":"Bergand","abbr":"BEAND","type1":"8","type2":""},{"name":"Bergfink","abbr":"BEFIN","type1":"1,5","type2":""},{"name":"Berglärka","abbr":"BELÄR","type1":"2","type2":""},{"name":"Bergstaigasångare","abbr":"PHHUM","type1":"0,5","type2":""},{"name":"Bergsångare","abbr":"BESÅN","type1":"","type2":""},{"name":"Berguv","abbr":"BEUV","type1":"94","type2":""},{"name":"Bivråk","abbr":"BIVRÅ","type1":"90","type2":"91"},{"name":"Biätare","abbr":"BIÄTA","type1":"","type2":""},{"name":"Björktrast","abbr":"BJTRA","type1":"4","type2":""},{"name":"Bläsand","abbr":"BLAND","type1":"8","type2":""},{"name":"Bläsgås","abbr":"BLGÅS","type1":"91","type2":""},{"name":"Blå kärrhök","abbr":"BLHÖK","type1":"7","type2":"8"},{"name":"Blåhake","abbr":"BLHAK","type1":"1,5","type2":""},{"name":"Blåkråka","abbr":"BLKRÅ","type1":"","type2":""},{"name":"Blåmes","abbr":"BLMES","type1":"1,5","type2":"1"},{"name":"Blåstjärt","abbr":"BLSTJ","type1":"1","type2":""},{"name":"Bofink","abbr":"BOFIN","type1":"1,5","type2":""},{"name":"Brandkronad kungsfågel","abbr":"BRKUN","type1":"0,5","type2":""},{"name":"Brednäbbad simsnäppa","abbr":"BRSIM","type1":"","type2":""},{"name":"Bredstjärtad labb","abbr":"BRLAB","type1":"","type2":""},{"name":"Brokig kardinal","abbr":"PHLUD","type1":"","type2":""},{"name":"Brun glada","abbr":"BRGLA","type1":"90","type2":""},{"name":"Brun kärrhök","abbr":"BRKÄR","type1":"8","type2":"90"},{"name":"Brun törnskata","abbr":"BRTÖR","type1":"","type2":""},{"name":"Brunand","abbr":"BRAND","type1":"90","type2":""},{"name":"Brunsångare","abbr":"BRSÅN","type1":"1","type2":""},{"name":"Brushane","abbr":"BRHAN","type1":"6","type2":"5"},{"name":"Buskskvätta","abbr":"BUSKV","type1":"1","type2":""},{"name":"Busksångare","abbr":"BUSÅN","type1":"1","type2":""},{"name":"Bändelkorsnäbb","abbr":"BÄKOR","type1":"3","type2":""},{"name":"Cettisångare","abbr":"CESÅN","type1":"","type2":""},{"name":"Citronärla","abbr":"CIÄRL","type1":"","type2":""},{"name":"Dalripa","abbr":"DARIP","type1":"8","type2":""},{"name":"Dammsnäppa","abbr":"DASNÄ","type1":"","type2":""},{"name":"Domherre","abbr":"DOHER","type1":"2","type2":""},{"name":"Drillsnäppa","abbr":"DRSNÄ","type1":"3","type2":""},{"name":"Dubbelbeckasin","abbr":"GAMED","type1":"5","type2":""},{"name":"Dubbeltrast","abbr":"DUTRA","type1":"4","type2":""},{"name":"Duvhök","abbr":"DUHÖK","type1":"90","type2":"91"},{"name":"Dvärgbeckasin","abbr":"LYMIN","type1":"4","type2":""},{"name":"Dvärgmås","abbr":"DVMÅS","type1":"4","type2":""},{"name":"Dvärgsparv","abbr":"DVSPA","type1":"1","type2":""},{"name":"Dvärgsångare","abbr":"PHNEG","type1":"","type2":""},{"name":"Dvärguv","abbr":"OTSCO","type1":"","type2":""},{"name":"Ejder","abbr":"EJDER","type1":"91","type2":""},{"name":"Eksångare","abbr":"HIPAL","type1":"","type2":""},{"name":"Enkelbeckasin","abbr":"ENBEC","type1":"4","type2":""},{"name":"Entita","abbr":"ENTIT","type1":"1","type2":""},{"name":"Fasan","abbr":"FASAN","type1":"","type2":""},{"name":"Fiskgjuse","abbr":"FIGJU","type1":"92","type2":""},{"name":"Fiskmås","abbr":"FIMÅS","type1":"7","type2":""},{"name":"Fisktärna","abbr":"FITÄR","type1":"4","type2":""},{"name":"Fjällabb","abbr":"FJLAB","type1":"6","type2":""},{"name":"Fjällgås","abbr":"FJGÅS","type1":"91","type2":""},{"name":"Fjällpipare","abbr":"FJPIP","type1":"4","type2":""},{"name":"Fjällripa","abbr":"FJRIP","type1":"8","type2":""},{"name":"Fjälluggla","abbr":"FJUGG","type1":"93","type2":""},{"name":"Fjällvråk","abbr":"FJVRÅ","type1":"91","type2":""},{"name":"Flodsångare","abbr":"FLSÅN","type1":"1","type2":""},{"name":"Forsärla","abbr":"FOÄRL","type1":"1,5","type2":""},{"name":"Fältpiplärka","abbr":"FÄPIP","type1":"2","type2":""},{"name":"Fältsångare","abbr":"FÄSÅN","type1":"","type2":""},{"name":"Glasögonflugsnappare","abbr":"MUDAU","type1":"","type2":""},{"name":"Gluttsnäppa","abbr":"GLSNÄ","type1":"6","type2":""},{"name":"Gransångare","abbr":"PHCOL","type1":"0,5","type2":""},{"name":"Gravand","abbr":"TATAD","type1":"90","type2":""},{"name":"Gräsand","abbr":"ANPLA","type1":"90","type2":""},{"name":"Gräshoppsångare","abbr":"LONAE","type1":"1","type2":""},{"name":"Grå flugsnappare","abbr":"GRFLU","type1":"1","type2":""},{"name":"Grågås","abbr":"GRGÅS","type1":"92,5","type2":"92"},{"name":"Gråhakedopping","abbr":"GRDOP","type1":"91","type2":""},{"name":"Gråhäger","abbr":"HÄGER","type1":"92","type2":"91"},{"name":"Gråsiska","abbr":"CAFLA","type1":"1","type2":""},{"name":"Gråsparv","abbr":"GRSPA","type1":"2","type2":"3"},{"name":"Gråspett","abbr":"GRSPE","type1":"4","type2":""},{"name":"Gråtrut","abbr":"GRTRU","type1":"90","type2":""},{"name":"Grönbena","abbr":"GRBEN","type1":"4","type2":""},{"name":"Grönfink","abbr":"GRFIN","type1":"2","type2":""},{"name":"Gröngöling","abbr":"GRGÖL","type1":"5","type2":""},{"name":"Grönsiska","abbr":"CASPI","type1":"1","type2":""},{"name":"Grönsångare","abbr":"PHSIB","type1":"1","type2":""},{"name":"Guldtrast","abbr":"ZODAU","type1":"","type2":""},{"name":"Gulhämpling","abbr":"GUHÄM","type1":"1","type2":""},{"name":"Gulsparv","abbr":"GUSPA","type1":"2","type2":""},{"name":"Gulärla","abbr":"GUÄRL","type1":"1","type2":"1,5"},{"name":"Gyllensparv","abbr":"GYSPA","type1":"","type2":""},{"name":"Gärdsmyg","abbr":"GÄSMY","type1":"1","type2":""},{"name":"Gök","abbr":"GÖK","type1":"5","type2":""},{"name":"Göktyta","abbr":"GÖTYT","type1":"3","type2":""},{"name":"Halsbandsflugsnappare","abbr":"HAFLU","type1":"1","type2":""},{"name":"Havssula","abbr":"HASUL","type1":"92","type2":""},{"name":"Havstrut","abbr":"HATRU","type1":"91","type2":""},{"name":"Havsörn","abbr":"HAÖRN","type1":"94","type2":"99"},{"name":"Hedpiplärka","abbr":"HEPIP","type1":"1","type2":""},{"name":"Hornuggla","abbr":"ASOTU","type1":"8","type2":""},{"name":"Hussvala","abbr":"HUSVA","type1":"1","type2":""},{"name":"Hybrid: azurmes / blåmes","abbr":"AZBLZ","type1":"","type2":""},{"name":"Hybrid: brun glada m * f röd glada","abbr":"GLBRZ","type1":"","type2":""},{"name":"Hybrid: citronärla / gulärla","abbr":"CIGUZ","type1":"","type2":""},{"name":"Hybrid: citronärla m * f gulärla","abbr":"CIGUZ","type1":"","type2":""},{"name":"Hybrid: gräshopps- / träsksångare","abbr":"GRTRZ","type1":"","type2":""},{"name":"Hybrid: grågås / kanadagås","abbr":"KAGRZ","type1":"","type2":""},{"name":"Hybrid: gråsparv / pilfink","abbr":"PIGRZ","type1":"","type2":""},{"name":"Hybrid: gråsparv m * f pilfink","abbr":"PIGRZ","type1":"","type2":""},{"name":"Hybrid: halsbands m * f svartvit flugsn.","abbr":"SVHAZ","type1":"","type2":""},{"name":"Hybrid: hussvala / ladusvala","abbr":"HULAZ","type1":"","type2":""},{"name":"Hybrid: hussvala m * f ladusvala","abbr":"HULAZ","type1":"","type2":""},{"name":"Hybrid: kungsfågel / brandkronad kungsf.","abbr":"KUBRZ","type1":"0,5","type2":""},{"name":"Hybrid: ladusvala / hussvala","abbr":"HULAZ","type1":"","type2":""},{"name":"Hybrid: ladusvala m * f hussvala","abbr":"HULAZ","type1":"","type2":""},{"name":"Hybrid: lappmes / talltita","abbr":"LATAZ","type1":"","type2":""},{"name":"Hybrid: pilfink / gråsparv","abbr":"PIGRZ","type1":"","type2":""},{"name":"Hybrid: pilfink m * f gråsparv","abbr":"PIGRZ","type1":"","type2":""},{"name":"Hybrid: röd glada / brun glada","abbr":"GLBRZ","type1":"","type2":""},{"name":"Hybrid: röd glada m * f brun glada","abbr":"GLBRZ","type1":"","type2":""},{"name":"Hybrid: rödstjärt / svart rödstjärt","abbr":"RÖSVZ","type1":"1","type2":""},{"name":"Hybrid: rörsångare / kärrsångare","abbr":"ACKRZ","type1":"","type2":""},{"name":"Hybrid: rörsångare / sävsångare","abbr":"RÖSÄZ","type1":"","type2":""},{"name":"Hybrid: svartvit / halsbandsflugsnappare","abbr":"SVHAZ","type1":"","type2":""},{"name":"Hybrid: svartvit m * f halsbandsflugsn.","abbr":"SVHAZ","type1":"","type2":""},{"name":"Hybrid: sångsvan / knölsvan","abbr":"SÅKNZ","type1":"","type2":""},{"name":"Hybrid: tjäder / orre (rackelhane)","abbr":"TJORZ","type1":"93","type2":"92"},{"name":"Hybrid: tofsmes / talltita","abbr":"TOTAZ","type1":"","type2":""},{"name":"Hybrid: vitryggig / större hackspett","abbr":"VISTZ","type1":"","type2":""},{"name":"Hybrid? hussvala / ladusvala","abbr":"HULAZ","type1":"","type2":""},{"name":"Hybrid? svartvit / halsbandsflugsnappare","abbr":"SVHAZ","type1":"","type2":""},{"name":"Hybrid?: citronärla / gulärla","abbr":"CIGUZ","type1":"","type2":""},{"name":"Hybrid?: pilfink / gråsparv","abbr":"PIGRZ","type1":"","type2":""},{"name":"Hybrid?: röd glada / brun glada","abbr":"GLBRZ","type1":"","type2":""},{"name":"Hybrid?: rörsångare / kärrsångare","abbr":"ACKRZ","type1":"","type2":""},{"name":"Häcksparv","abbr":"EMCIR","type1":"","type2":""},{"name":"Hämpling","abbr":"HÄMPL","type1":"1","type2":""},{"name":"Härfågel","abbr":"HÄFÅG","type1":"4","type2":""},{"name":"Härmsångare","abbr":"HIICT","type1":"1","type2":""},{"name":"Höksångare","abbr":"HÖSÅN","type1":"3","type2":""},{"name":"Hökuggla","abbr":"SUULU","type1":"90","type2":"91"},{"name":"Iberisk gransångare","abbr":"IBGRA","type1":"","type2":""},{"name":"Intermediär: gråsiska / snösiska","abbr":"SNCAZ","type1":"1","type2":""},{"name":"Isabellatörnskata","abbr":"ISTÖR","type1":"","type2":""},{"name":"Ismås","abbr":"ISMÅS","type1":"","type2":""},{"name":"Jaktfalk","abbr":"JAFAL","type1":"91","type2":""},{"name":"Jorduggla","abbr":"JOUGG","type1":"8","type2":""},{"name":"Järnsparv","abbr":"JÄSPA","type1":"1,5","type2":"1"},{"name":"Järpe","abbr":"JÄRPE","type1":"7","type2":""},{"name":"Kaja","abbr":"KAJA","type1":"6","type2":""},{"name":"Kanadagås","abbr":"KAGÅS","type1":"92,5","type2":""},{"name":"Kaspisk trut","abbr":"LACAC","type1":"90","type2":""},{"name":"Kasserad ring","abbr":"KASS","type1":"","type2":""},{"name":"Kattuggla","abbr":"KAUGG","type1":"90","type2":""},{"name":"Kentsk tärna","abbr":"KETÄR","type1":"5","type2":""},{"name":"Klippsparv","abbr":"KLSPA","type1":"","type2":""},{"name":"Klykstjärtad stormsvala","abbr":"KLSTO","type1":"","type2":""},{"name":"Knipa","abbr":"KNIPA","type1":"90","type2":""},{"name":"Knölsvan","abbr":"KNSVA","type1":"99","type2":""},{"name":"Koltrast","abbr":"KOTRA","type1":"4","type2":""},{"name":"Kornknarr","abbr":"KOKNA","type1":"6","type2":""},{"name":"Kornsparv","abbr":"KOSPA","type1":"3","type2":""},{"name":"Korp","abbr":"KORP","type1":"91","type2":"90"},{"name":"Korttålärka","abbr":"KOLÄR","type1":"","type2":""},{"name":"Kricka","abbr":"KRICK","type1":"7","type2":""},{"name":"Kråka","abbr":"KRÅKA","type1":"8","type2":""},{"name":"Kungsfiskare","abbr":"KUFIS","type1":"3","type2":""},{"name":"Kungsfågel","abbr":"KUFÅG","type1":"0,5","type2":""},{"name":"Kungsfågelsångare","abbr":"KUSÅN","type1":"0,5","type2":""},{"name":"Kungsörn","abbr":"KUÖRN","type1":"99","type2":"94"},{"name":"Kustlabb","abbr":"LABB","type1":"7","type2":""},{"name":"Kustpipare","abbr":"KUPIP","type1":"5","type2":""},{"name":"Kustsnäppa","abbr":"KUSNÄ","type1":"4","type2":""},{"name":"Kärrsnäppa","abbr":"KÄSNÄ","type1":"3","type2":""},{"name":"Kärrsångare","abbr":"KRÅNG","type1":"1","type2":""},{"name":"Ladusvala","abbr":"LASVA","type1":"1","type2":""},{"name":"Lappmes","abbr":"LAMES","type1":"2","type2":""},{"name":"Lappsparv","abbr":"LASPA","type1":"2","type2":""},{"name":"Lappuggla","abbr":"LAUGG","type1":"92","type2":""},{"name":"Lavskrika","abbr":"LASKR","type1":"5","type2":""},{"name":"Ljungpipare","abbr":"LJPIP","type1":"5","type2":""},{"name":"Lundsångare","abbr":"LUSÅN","type1":"0,5","type2":""},{"name":"Lunnefågel","abbr":"LUFÅG","type1":"","type2":""},{"name":"Lärkfalk","abbr":"LÄFAL","type1":"6","type2":""},{"name":"Långtåsnäppa","abbr":"LÅSNÄ","type1":"","type2":""},{"name":"Lövsångare","abbr":"LÖSÅN","type1":"1","type2":""},{"name":"Macchiasångare","abbr":"HIOPA","type1":"","type2":""},{"name":"Masktörnskata","abbr":"LANUB","type1":"","type2":""},{"name":"Medelhavsstenskvätta","abbr":"OEHIS","type1":"","type2":""},{"name":"Mellanspett","abbr":"MESPE","type1":"4","type2":""},{"name":"Mindre flugsnappare","abbr":"MIFLU","type1":"0,5","type2":""},{"name":"Mindre hackspett","abbr":"MIHAC","type1":"2","type2":""},{"name":"Mindre korsnäbb","abbr":"MIKOR","type1":"3","type2":""},{"name":"Mindre strandpipare","abbr":"MISTR","type1":"2","type2":""},{"name":"Mindre sumphöna","abbr":"MISUM","type1":"5","type2":""},{"name":"Mindre sångsvan","abbr":"MISÅN","type1":"99","type2":""},{"name":"Minervauggla","abbr":"MIUGG","type1":"","type2":""},{"name":"Mongolpiplärka","abbr":"ANGOD","type1":"","type2":""},{"name":"Morkulla","abbr":"MOKUL","type1":"6","type2":""},{"name":"Mosnäppa","abbr":"MOSNÄ","type1":"2","type2":""},{"name":"Myrsnäppa","abbr":"MYSNÄ","type1":"3","type2":""},{"name":"Myrspov","abbr":"MYSPO","type1":"6","type2":""},{"name":"Narcissflugsnappare","abbr":"FINAR","type1":"","type2":""},{"name":"Nattskärra","abbr":"NASKÄ","type1":"4","type2":""},{"name":"Nordsångare","abbr":"NOSÅN","type1":"1","type2":""},{"name":"Nunnestenskvätta","abbr":"OEPLE","type1":"","type2":""},{"name":"Ny art som saknar kod","abbr":"NYART","type1":"","type2":""},{"name":"Näktergal","abbr":"NÄGAL","type1":"2","type2":""},{"name":"Nötkråka","abbr":"NÖKRÅ","type1":"5","type2":"6"},{"name":"Nötskrika","abbr":"NÖSKR","type1":"6","type2":""},{"name":"Nötväcka","abbr":"NÖVÄC","type1":"2","type2":""},{"name":"Okänd","abbr":"OKÄND","type1":"","type2":""},{"name":"Ormvråk","abbr":"ORVRÅ","type1":"90","type2":""},{"name":"Orre","abbr":"ORRE","type1":"90","type2":"8"},{"name":"Ortolansparv","abbr":"ORSPA","type1":"2","type2":""},{"name":"Pilfink","abbr":"PIFIN","type1":"2","type2":""},{"name":"Pilgrimsfalk","abbr":"PIFAL","type1":"90","type2":""},{"name":"Polyglottsångare","abbr":"POSÅN","type1":"","type2":""},{"name":"Provencesångare","abbr":"SYUND","type1":"","type2":""},{"name":"Prutgås","abbr":"PRGÅS","type1":"91","type2":""},{"name":"Prärielöpare","abbr":"PRLÖP","type1":"","type2":""},{"name":"Pungmes","abbr":"PUMES","type1":"1","type2":""},{"name":"Pärluggla","abbr":"PÄUGG","type1":"7","type2":""},{"name":"Rapphöna","abbr":"RAHÖN","type1":"7","type2":""},{"name":"Ringduva","abbr":"RIDUV","type1":"8","type2":""},{"name":"Ringtrast","abbr":"RITRA","type1":"4","type2":""},{"name":"Rosenfink","abbr":"ROSEN","type1":"2","type2":""},{"name":"Rosenstare","abbr":"ROSTA","type1":"","type2":""},{"name":"Roskarl","abbr":"ROKAR","type1":"4","type2":""},{"name":"Rostgumpsvala","abbr":"ROSVA","type1":"1","type2":""},{"name":"Rostskogstrast","abbr":"ROSKO","type1":"","type2":""},{"name":"Råka","abbr":"RÅKA","type1":"8","type2":""},{"name":"Röd glada","abbr":"GLADA","type1":"90","type2":""},{"name":"Rödbena","abbr":"RÖBEN","type1":"5","type2":"4"},{"name":"Rödhake","abbr":"RÖHAK","type1":"1","type2":""},{"name":"Rödhalsad snäppa","abbr":"CARUF","type1":"","type2":""},{"name":"Rödhuvad dykand","abbr":"RÖDYK","type1":"","type2":""},{"name":"Rödhuvad törnskata","abbr":"RÖTÖR","type1":"","type2":""},{"name":"Rödspov","abbr":"RÖSPO","type1":"7","type2":""},{"name":"Rödstjärt","abbr":"RÖSTJ","type1":"1","type2":""},{"name":"Rödstrupig piplärka","abbr":"RÖPIP","type1":"1","type2":""},{"name":"Rödstrupig sångare","abbr":"SYCAN","type1":"","type2":""},{"name":"Rödvingetrast","abbr":"RÖTRA","type1":"3","type2":"3,5"},{"name":"Rördrom","abbr":"RÖDRO","type1":"91","type2":""},{"name":"Rörhöna","abbr":"RÖHÖN","type1":"8","type2":""},{"name":"Rörsångare","abbr":"ACSCI","type1":"1","type2":""},{"name":"Salskrake","abbr":"SASKR","type1":"8","type2":""},{"name":"Sammetshätta","abbr":"SAHÄT","type1":"","type2":""},{"name":"Sandlöpare","abbr":"SALÖP","type1":"3","type2":""},{"name":"Saxaulsångare","abbr":"HIRAM","type1":"","type2":""},{"name":"Sibirisk järnsparv","abbr":"SIJÄR","type1":"","type2":""},{"name":"Sibirisk piplärka","abbr":"SIPIP","type1":"","type2":""},{"name":"Sibirisk trast","abbr":"SITRA","type1":"","type2":""},{"name":"Sidensvans","abbr":"SISVA","type1":"3","type2":"3,5"},{"name":"Sillgrissla","abbr":"SIGRI","type1":"GRI","type2":"90"},{"name":"Silltrut","abbr":"SITRU","type1":"8","type2":""},{"name":"Silvertärna","abbr":"SITÄR","type1":"4","type2":""},{"name":"Sjöorre","abbr":"SJORR","type1":"90","type2":""},{"name":"Skata","abbr":"SKATA","type1":"6","type2":""},{"name":"Skedand","abbr":"SKAND","type1":"8","type2":""},{"name":"Skogsduva","abbr":"SKDUV","type1":"7","type2":""},{"name":"Skogssnäppa","abbr":"TROCH","type1":"4","type2":""},{"name":"Skrattmås","abbr":"SKMÅS","type1":"6","type2":""},{"name":"Skräntärna","abbr":"SKTÄR","type1":"7","type2":""},{"name":"Skäggdopping","abbr":"SKDOP","type1":"91","type2":""},{"name":"Skäggmes","abbr":"SKMES","type1":"1,5","type2":""},{"name":"Skärfläcka","abbr":"SKFLÄ","type1":"7","type2":"6"},{"name":"Skärpiplärka","abbr":"SKPIP","type1":"1","type2":""},{"name":"Skärsnäppa","abbr":"CAMAR","type1":"4","type2":""},{"name":"Slaguggla","abbr":"SLUGG","type1":"92","type2":"91"},{"name":"Smalnäbbad simsnäppa","abbr":"SMSIM","type1":"3","type2":""},{"name":"Smådopping","abbr":"SMDOP","type1":"7","type2":""},{"name":"Småfläckig sumphöna","abbr":"SMSUM","type1":"5","type2":""},{"name":"Smålom","abbr":"SMLOM","type1":"91","type2":""},{"name":"Småskrake","abbr":"SMSKR","type1":"90","type2":""},{"name":"Småsnäppa","abbr":"SMSNÄ","type1":"2","type2":""},{"name":"Småspov","abbr":"SMSPO","type1":"7","type2":""},{"name":"Småtärna","abbr":"SMTÄR","type1":"3","type2":""},{"name":"Snatterand","abbr":"SNAND","type1":"8","type2":""},{"name":"Snögås","abbr":"SNGÅS","type1":"","type2":""},{"name":"Snösiska","abbr":"SNSIS","type1":"1","type2":""},{"name":"Snösparv","abbr":"SNSPA","type1":"3","type2":""},{"name":"Sommargylling","abbr":"SOGYL","type1":"4","type2":""},{"name":"Sothöna","abbr":"SOHÖN","type1":"90","type2":""},{"name":"Sparvhök","abbr":"SPHÖK","type1":"5","type2":"6"},{"name":"Sparvuggla","abbr":"SPUGG","type1":"6","type2":""},{"name":"Spetsbergsgås","abbr":"SPGÅS","type1":"91","type2":""},{"name":"Spillkråka","abbr":"SPKRÅ","type1":"6","type2":""},{"name":"Spovsnäppa","abbr":"SPSNÄ","type1":"3","type2":""},{"name":"Stare","abbr":"STARE","type1":"4","type2":""},{"name":"Starrsångare","abbr":"LOCER","type1":"","type2":""},{"name":"Steglits","abbr":"STEGL","type1":"1,5","type2":""},{"name":"Stenfalk","abbr":"STFAL","type1":"6","type2":""},{"name":"Stenknäck","abbr":"STKNÄ","type1":"4","type2":""},{"name":"Stenskvätta","abbr":"STSKV","type1":"1,5","type2":"2"},{"name":"Stjärtand","abbr":"ANACU","type1":"90","type2":"8"},{"name":"Stjärtmes","abbr":"STMES","type1":"1","type2":""},{"name":"Storlabb","abbr":"STLAB","type1":"","type2":""},{"name":"Storlom","abbr":"STLOM","type1":"92","type2":""},{"name":"Stormfågel","abbr":"STFÅG","type1":"7","type2":""},{"name":"Stormsvala","abbr":"STSVA","type1":"2","type2":""},{"name":"Storskarv","abbr":"PHCAR","type1":"92","type2":""},{"name":"Storskrake","abbr":"MEMER","type1":"91","type2":""},{"name":"Storspov","abbr":"STSPO","type1":"8","type2":""},{"name":"Strandskata","abbr":"HAOST","type1":"8","type2":""},{"name":"Stripgås","abbr":"STGÅS","type1":"","type2":""},{"name":"Strömstare","abbr":"STSTA","type1":"3,5","type2":""},{"name":"Stäpphök","abbr":"STHÖK","type1":"6","type2":""},{"name":"Stäppsångare","abbr":"HICAL","type1":"","type2":""},{"name":"Stäppörn","abbr":"AQNIP","type1":"","type2":""},{"name":"Större hackspett","abbr":"STHAC","type1":"4","type2":""},{"name":"Större korsnäbb","abbr":"STKOR","type1":"3","type2":""},{"name":"Större piplärka","abbr":"STPIP","type1":"","type2":""},{"name":"Större strandpipare","abbr":"STSTR","type1":"3","type2":""},{"name":"Svart rödstjärt","abbr":"SVRÖD","type1":"1","type2":""},{"name":"Svart stork","abbr":"SVSTO","type1":"92","type2":""},{"name":"Svartbent strandpipare","abbr":"SVSTR","type1":"3","type2":""},{"name":"Svarthakad buskskvätta","abbr":"SVBUS","type1":"1","type2":""},{"name":"Svarthakedopping","abbr":"POAUR","type1":"8","type2":""},{"name":"Svarthalsad dopping","abbr":"PONIG","type1":"8","type2":""},{"name":"Svarthuvad mås","abbr":"SVMÅS","type1":"","type2":""},{"name":"Svarthuvad sparv","abbr":"SVSPA","type1":"","type2":""},{"name":"Svarthätta","abbr":"SVHÄT","type1":"1,5","type2":"2"},{"name":"Svartmes","abbr":"SVMES","type1":"1","type2":""},{"name":"Svartpannad törnskata","abbr":"SVTÖR","type1":"","type2":""},{"name":"Svartsnäppa","abbr":"SVSNÄ","type1":"5","type2":""},{"name":"Svartstrupig järnsparv","abbr":"PRATR","type1":"","type2":""},{"name":"Svarttärna","abbr":"SVTÄR","type1":"3","type2":""},{"name":"Svartvit flugsnappare","abbr":"SVFLU","type1":"1","type2":""},{"name":"Svärta","abbr":"SVÄRT","type1":"90","type2":""},{"name":"Sydnäktergal","abbr":"SYNÄK","type1":"2","type2":""},{"name":"Sädesärla","abbr":"SÄÄRL","type1":"1,5","type2":""},{"name":"Sädgås","abbr":"SÄGÅS","type1":"92,5","type2":""},{"name":"Sävsparv","abbr":"SÄSPA","type1":"1,5","type2":""},{"name":"Sävsångare","abbr":"SÄSÅN","type1":"1","type2":""},{"name":"Sånglärka","abbr":"SÅLÄR","type1":"2","type2":""},{"name":"Sångsparv","abbr":"MEMEL","type1":"","type2":""},{"name":"Sångsvan","abbr":"SÅSVA","type1":"99","type2":""},{"name":"Taigasångare","abbr":"TASÅN","type1":"0,5","type2":""},{"name":"Taigatrast","abbr":"TURUF","type1":"","type2":""},{"name":"Talgoxe","abbr":"TAOXE","type1":"2","type2":""},{"name":"Tallbit","abbr":"TABIT","type1":"3","type2":""},{"name":"Tallsparv","abbr":"EMLEU","type1":"","type2":""},{"name":"Talltita","abbr":"TATIT","type1":"1,5","type2":"1"},{"name":"Taltrast","abbr":"TATRA","type1":"4","type2":"3,5"},{"name":"Tereksnäppa","abbr":"TESNÄ","type1":"","type2":""},{"name":"Tjäder","abbr":"TJÄDE","type1":"93","type2":"92"},{"name":"Tobisgrissla","abbr":"TOGRI","type1":"7","type2":"6"},{"name":"Tofslärka","abbr":"TOLÄR","type1":"3","type2":""},{"name":"Tofsmes","abbr":"TOMES","type1":"1,5","type2":""},{"name":"Tofsvipa","abbr":"TOVIP","type1":"6S","type2":"6"},{"name":"Toppskarv","abbr":"TOSKA","type1":"","type2":""},{"name":"Tordmule","abbr":"TOMUL","type1":"8","type2":""},{"name":"Tornfalk","abbr":"TOFAL","type1":"7","type2":"6"},{"name":"Tornseglare","abbr":"TOSEG","type1":"3","type2":""},{"name":"Tornuggla","abbr":"TOUGG","type1":"8","type2":""},{"name":"Trana","abbr":"TRANA","type1":"93","type2":""},{"name":"Trastsångare","abbr":"ACARU","type1":"3","type2":""},{"name":"Tretåig hackspett","abbr":"TRHAC","type1":"4","type2":""},{"name":"Tretåig mås","abbr":"TRMÅS","type1":"6","type2":""},{"name":"Trädgårdssångare","abbr":"SYBOR","type1":"1,5","type2":"2"},{"name":"Trädgårdsträdkrypare","abbr":"TRTRÄ","type1":"0,5","type2":""},{"name":"Trädkrypare","abbr":"TRKRY","type1":"0,5","type2":""},{"name":"Trädlärka","abbr":"TRLÄR","type1":"1,5","type2":""},{"name":"Trädpiplärka","abbr":"TRPIP","type1":"1,5","type2":"2"},{"name":"Träsksångare","abbr":"LOLAN","type1":"","type2":""},{"name":"Tundrapiplärka","abbr":"ANGUS","type1":"","type2":""},{"name":"Turkduva","abbr":"RKDUV","type1":"7","type2":""},{"name":"Turturduva","abbr":"RTURD","type1":"6","type2":""},{"name":"Tuvsnäppa","abbr":"TUSNÄ","type1":"","type2":""},{"name":"Törnskata","abbr":"TÖSKA","type1":"3","type2":"3,5"},{"name":"Törnsångare","abbr":"TÖSÅN","type1":"1,5","type2":"2"},{"name":"Vaktel","abbr":"VAKTE","type1":"5","type2":""},{"name":"Varfågel","abbr":"VAFÅG","type1":"4","type2":""},{"name":"Vassångare","abbr":"LOLUS","type1":"1","type2":""},{"name":"Vattenpiplärka","abbr":"VAPIP","type1":"1","type2":""},{"name":"Vattenrall","abbr":"VARAL","type1":"6","type2":"5"},{"name":"Vattensångare","abbr":"ACPAL","type1":"","type2":""},{"name":"Videsparv","abbr":"EMRUS","type1":"1,5","type2":""},{"name":"Videsångare","abbr":"VISÅN","type1":"1","type2":""},{"name":"Vigg","abbr":"VIGG","type1":"8","type2":"90"},{"name":"Vinterhämpling","abbr":"VIHÄM","type1":"1","type2":""},{"name":"Vit stork","abbr":"VISTO","type1":"CIC","type2":""},{"name":"Vitgumpsnäppa","abbr":"VISNÄ","type1":"","type2":""},{"name":"Vitkindad gås","abbr":"VIGÅS","type1":"91","type2":""},{"name":"Vitnäbbad islom","abbr":"VILOM","type1":"","type2":""},{"name":"Vitryggig hackspett","abbr":"VIHAC","type1":"4","type2":""},{"name":"Vitstrupig näktergal","abbr":"VINÄK","type1":"","type2":""},{"name":"Vittrut","abbr":"LAHYP","type1":"","type2":""},{"name":"Vitvingad tärna","abbr":"VITÄR","type1":"","type2":""},{"name":"Ängshök","abbr":"ÄNHÖK","type1":"7","type2":"6"},{"name":"Ängspiplärka","abbr":"ÄNPIP","type1":"1","type2":""},{"name":"Ärtsångare","abbr":"ÄRSÅN","type1":"1","type2":""},{"name":"Årta","abbr":"ÅRTA","type1":"7","type2":""},{"name":"Ökenstenskvätta","abbr":"OEDES","type1":"","type2":""},{"name":"Ökensångare","abbr":"ÖKSÅN","type1":"","type2":""},{"name":"Ökenvarfågel","abbr":"ÖKVAR","type1":"4","type2":""}];
+const ageOptions=['00','1+','1K','2+','2K','3+','3K'];const genderOptions=['','Hona','Hane'];const todoTypeOptions=['','Kontrollera ålder','Kontrollera bild','Lägg in i DRS','DNA','Mått','Ringnummer','Återbesök lokal','Fråga kollega','Annat'];const todoPriorityOptions=['normal','hög','akut'];const localities=['Aspa','FTIN5','Borgsholm','Braskens','Fröjerum','Herrebro','Kaga','Klinga','Kniberga','Knivberga','Löt','Mellby','Resebro','Åsebro','Össby'];let reportMode='month';let currentEditId=null;function $(id){return document.getElementById(id)}function showPage(id){['home','newMarking','newControl','reports','editSearch','editRecord','markers','broods','broodDetail','todo','locations','ringStock','dataTools','about'].forEach(p=>{$(p).style.display=p===id?'block':'none'});if(id==='home')renderHomeStats();if(id==='reports')renderReports();if(id==='broods')renderBroods();if(id==='markers')renderMarkers();if(id==='todo')renderTodo();if(id==='locations')renderLocations();if(id==='editSearch')$('searchRing').focus()}function goHome(){showPage('home')}document.querySelectorAll('.nav').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showPage(a.getAttribute('href').slice(1))}));function toast(txt){const t=$('toast');t.textContent='✓ '+txt;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}function todayISO(){return new Date().toISOString().slice(0,10)}function nowTime(){return new Date().toTimeString().slice(0,5)}function uid(){return'id_'+Date.now()+'_'+Math.random().toString(16).slice(2)}function getRecords(){return JSON.parse(localStorage.getItem('kimbird_records')||'[]')}function setRecords(v){localStorage.setItem('kimbird_records',JSON.stringify(v))}function renderHomeStats(){const all=getRecords();const today=todayISO();const now=new Date();const weekStart=startOfWeek(now);const month=now.getMonth(), year=now.getFullYear();const todayRows=all.filter(r=>r.date===today);const weekRows=all.filter(r=>new Date(r.date+'T00:00')>=weekStart);const monthRows=all.filter(r=>{const d=new Date(r.date);return d.getMonth()===month&&d.getFullYear()===year});const controls=all.filter(r=>r.type==='control').length;const species=new Set(all.map(r=>r.art).filter(Boolean)).size;const follow=all.filter(r=>r.todo&&r.todo.open).length;const el=$('homeStats');if($('todoCountHome'))$('todoCountHome').textContent='('+follow+')';if(!el)return;el.innerHTML=`<div class="stats"><div class="stat"><b>${todayRows.length}</b><span>Idag</span></div><div class="stat"><b>${weekRows.length}</b><span>Vecka</span></div><div class="stat"><b>${monthRows.length}</b><span>Månad</span></div><div class="stat"><b>${controls}</b><span>Kontroller</span></div><div class="stat"><b>${species}</b><span>Arter</span></div><div class="stat"><b>${follow}</b><span>Att göra</span></div></div>`}function getMarkers(){let m=JSON.parse(localStorage.getItem('kimbird_markers')||'null');if(!m){m=[{id:uid(),first:'Kim',last:'',code:'KIM'}];setMarkers(m)}return m}function setMarkers(v){localStorage.setItem('kimbird_markers',JSON.stringify(v))}function getLocations(){return JSON.parse(localStorage.getItem('kimbird_locations')||'[]')}function setLocations(v){localStorage.setItem('kimbird_locations',JSON.stringify(v))}function findSpecies(name){const n=(name||'').trim().toLowerCase();return speciesData.find(s=>s.name.toLowerCase()===n)}function ringText(sp){if(!sp)return'';return sp.type1+(sp.type2?' ('+sp.type2+')':'')}
+function refreshLocationDatalist(){const ldl=$('locationDatalist');if(!ldl)return;ldl.innerHTML='';getLocations().forEach(l=>{const o=document.createElement('option');o.value=locationDisplay(l);ldl.appendChild(o)})}
+function initLists(){const dl=$('speciesList');dl.innerHTML='';speciesData.forEach(s=>{const o=document.createElement('option');o.value=s.name;o.label=s.name+' ('+s.abbr+')';dl.appendChild(o)});refreshLocationDatalist();const month=$('reportMonth');['01','02','03','04','05','06','07','08','09','10','11','12'].forEach((m,i)=>{const o=document.createElement('option');o.value=String(i+1);o.textContent=m;month.appendChild(o)});const d=new Date();month.value=String(d.getMonth()+1);$('reportYear').value=d.getFullYear();if($('reportSearch'))$('reportSearch').addEventListener('input',renderReports);if($('searchRing'))$('searchRing').addEventListener('input',searchRecordByRing);if($('locationSearch'))$('locationSearch').addEventListener('input',renderLocations);if($('broodSearch'))$('broodSearch').addEventListener('input',renderBroods)}
+function markerSelectHTML(id){return `<select id="${id}">`+getMarkers().map(m=>`<option value="${m.id}">${m.code} – ${m.first} ${m.last}</option>`).join('')+'</select><button type="button" class="btn-small" onclick="showPage(\'markers\')">Hantera märkare</button>'}function selectHTML(id,vals){return`<select id="${id}">`+vals.map(v=>`<option value="${v}">${v||'Välj'}</option>`).join('')+'</select>'}
+function buildBirdForm(formId,prefix,type,record){const r=record||{};const form=$(formId);const todo=r.todo||{};form.innerHTML=`<label>Art</label><input id="${prefix}Art" list="speciesList" autocomplete="off" value="${r.art||''}"><div id="${prefix}SpeciesInfo" class="species-info"></div><label>Ringnummer</label><input id="${prefix}Ring" required value="${r.ring||''}"><label>Datum</label><input id="${prefix}Date" type="date" value="${r.date||todayISO()}" required><label>Tid</label><input id="${prefix}Time" type="time" value="${r.time||nowTime()}"><label>Märkare</label>${markerSelectHTML(prefix+'Marker')}<label>Kön</label>${selectHTML(prefix+'Gender',genderOptions)}<label>Ålder</label>${selectHTML(prefix+'Age',ageOptions)}<div class="brood-box" id="${prefix}BroodBox" style="display:none"><label>Antal ungar i kull</label><input id="${prefix}BroodCount" type="number" min="1" max="99" step="1" value="${r.broodCount||''}" placeholder="t.ex. 5"><div class="hint" id="${prefix}BroodInfo"></div></div><label>Vinge (mm)</label><input id="${prefix}Wing" type="number" step="0.1" value="${r.wing||''}"><label>Vikt (g)</label><input id="${prefix}Weight" type="number" step="0.1" value="${r.weight||''}"><label>Plats</label><input id="${prefix}Location" list="locationDatalist" value="${r.location||''}"><div class="row"><button type="button" class="btn-small btn-gray" onclick="useCurrentPosition('${prefix}')">📍 Hämta/spara lokal här</button><button type="button" class="btn-small btn-gray" onclick="useNearestLocation('${prefix}')">Närmast</button></div><div class="hint" id="${prefix}LocationInfo"></div><div class="gps-box" id="${prefix}GpsBox" style="display:none"><div id="${prefix}GpsText" class="hint"></div><label>Lokalkod</label><input id="${prefix}GpsCode" placeholder="t.ex. P36B"><label>Lokalnamn</label><input id="${prefix}GpsName" placeholder="Namn på platsen"><button type="button" class="btn-green" onclick="saveCurrentGpsAsLocation('${prefix}')">Spara lokal</button></div><div id="${prefix}BillWrap" style="display:none"><label>Näbblängd (mm)</label><input id="${prefix}Bill" type="number" step="0.1" value="${r.bill||''}"></div><label>Bild</label><input id="${prefix}Image" type="file" accept="image/*"><div class="hint" id="${prefix}ImageHint">${r.imageName?'Bild: '+r.imageName:'Ingen bild vald'}</div><label class="checkbox-line"><input id="${prefix}TodoOpen" type="checkbox" ${todo.open?'checked':''}> Lägg till uppgift / att göra</label><div id="${prefix}TodoBox" style="display:${todo.open?'block':'none'}"><label>Uppgiftstyp</label>${selectHTML(prefix+'TodoType',todoTypeOptions)}<label>Prioritet</label>${selectHTML(prefix+'TodoPriority',todoPriorityOptions)}<label>Förfallodatum</label><input id="${prefix}TodoDue" type="date" value="${todo.due||''}"><label>Uppgiftskommentar</label><textarea id="${prefix}TodoText">${todo.text||r.comment||''}</textarea></div><label>Kommentar</label><textarea id="${prefix}Comment">${r.comment||''}</textarea><div class="row sticky-save"><button type="submit" class="btn-green">Spara</button><button type="button" onclick="goHome()" class="btn-red">Hem</button></div>${record?'<div class="danger-zone"><button type="button" onclick="deleteCurrentRecord()" class="btn-red">Radera märkning</button></div>':''}`;if(r.markerId)$(prefix+'Marker').value=r.markerId;if(r.gender!==undefined)$(prefix+'Gender').value=r.gender;if(r.age)$(prefix+'Age').value=r.age;if(todo.type)$(prefix+'TodoType').value=todo.type;if(todo.priority)$(prefix+'TodoPriority').value=todo.priority;$(prefix+'Art').addEventListener('input',()=>updateSpeciesInfo(prefix));$(prefix+'Image').addEventListener('change',e=>{$(prefix+'ImageHint').textContent=e.target.files[0]?'Bild: '+e.target.files[0].name:(r.imageName?'Bild: '+r.imageName:'Ingen bild vald')});$(prefix+'Location').addEventListener('input',()=>updateLocationInfo(prefix));$(prefix+'Age').addEventListener('change',()=>updateBroodInfo(prefix,!!record));$(prefix+'Ring').addEventListener('input',()=>updateBroodInfo(prefix,!!record));$(prefix+'BroodCount').addEventListener('input',()=>updateBroodInfo(prefix,!!record));$(prefix+'TodoOpen').addEventListener('change',()=>{$(prefix+'TodoBox').style.display=$(prefix+'TodoOpen').checked?'block':'none'});updateSpeciesInfo(prefix);updateLocationInfo(prefix);updateBroodInfo(prefix,!!record);form.onsubmit=e=>{e.preventDefault();saveBirdRecord(prefix,type,record&&record.id)}}
+function ringSeriesEnd(start,count){const s=(start||'').trim();const n=Number(count||0);if(!s||!/^\d+$/.test(s)||!n)return'';const end=String(Number(s)+n-1);return end}
+function ringSuffixOk(start,count){const s=(start||'').trim();const n=Number(count||0);if(!s||!/^\d+$/.test(s)||!n)return true;const suffix=Number(s.slice(-2));return suffix+n-1<=99}
+function updateBroodInfo(prefix,isEdit){const age=$(prefix+'Age')?.value;const box=$(prefix+'BroodBox');const info=$(prefix+'BroodInfo');if(!box||!info)return;if(age==='00'&&!isEdit){box.style.display='block';const count=Number($(prefix+'BroodCount').value||0);const start=$(prefix+'Ring').value.trim();if(count>1&&start){const end=ringSeriesEnd(start,count);const ok=ringSuffixOk(start,count);info.textContent=ok?('Skapar '+count+' ungar: '+start+'–'+end):('Varning: serien passerar 99. Dela upp kullen eller välj rätt startnummer.');info.style.color=ok?'#666':'#dc3545'}else info.textContent='Ange antal ungar för att skapa flera poster automatiskt.'}else{box.style.display='none';$(prefix+'BroodCount').value='';info.textContent=''}}
+function normalizeText(s){return (s||'').toString().trim()}
+function escapeXml(s){return normalizeText(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&apos;")}
+function locationDisplay(l){if(!l)return'';return (l.code?l.code+' – ':'')+(l.name||'')+(l.source?' ['+l.source+']':'')}
+function findLocationByDisplay(val){const v=normalizeText(val).toLowerCase();return getLocations().find(l=>locationDisplay(l).toLowerCase()===v||l.code.toLowerCase()===v||(l.name||'').toLowerCase()===v)}
+function updateLocationInfo(prefix){const el=$(prefix+'LocationInfo');if(!el)return;const loc=findLocationByDisplay($(prefix+'Location').value);el.textContent=loc?('Kod: '+loc.code+' · '+loc.name+' · '+Number(loc.lat).toFixed(5)+', '+Number(loc.lon).toFixed(5)) : ''}function distanceMeters(a,b,c,d){const R=6371000,rad=x=>x*Math.PI/180;const dLat=rad(c-a),dLon=rad(d-b);const x=Math.sin(dLat/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(dLon/2)**2;return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function nearestLocation(lat,lon,maxM){let best=null;getLocations().forEach(l=>{const d=distanceMeters(Number(lat),Number(l.lon?l.lat:0),Number(l.lat),Number(l.lon));if(!isFinite(d))return;if(!best||d<best.distance)best={...l,distance:d}});return best&&(!maxM||best.distance<=maxM)?best:null}
+function useCurrentPosition(prefix){if(!navigator.geolocation){alert('GPS stöds inte i denna webbläsare.');return}toast('Hämtar position...');navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude.toFixed(6),lon=pos.coords.longitude.toFixed(6);const near=nearestLocation(lat,lon,50);if(near&&confirm('Du verkar vara vid '+near.code+' – '+near.name+' ('+Math.round(near.distance)+' m). Använd denna lokal?')){$(prefix+'Location').value=locationDisplay(near);updateLocationInfo(prefix);toast('Lokal vald');return}$(prefix+'GpsBox').style.display='block';$(prefix+'GpsBox').dataset.lat=lat;$(prefix+'GpsBox').dataset.lon=lon;$(prefix+'GpsText').textContent='Nuvarande position: '+lat+', '+lon+(near?' · närmast: '+near.code+' '+Math.round(near.distance)+' m':'');$(prefix+'GpsCode').focus()},err=>{alert('Kunde inte hämta position: '+err.message)},{enableHighAccuracy:true,timeout:12000,maximumAge:30000})}
+function useNearestLocation(prefix){if(!navigator.geolocation){alert('GPS stöds inte i denna webbläsare.');return}toast('Söker närmaste lokal...');navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude;const near=nearestLocation(lat,lon,0);if(!near){alert('Inga lokaler finns importerade.');return}if(confirm('Närmast är '+near.code+' – '+near.name+' ('+Math.round(near.distance)+' m). Använd denna?')){$(prefix+'Location').value=locationDisplay(near);updateLocationInfo(prefix)}},err=>alert('Kunde inte hämta position: '+err.message),{enableHighAccuracy:true,timeout:12000,maximumAge:30000})}
+function saveCurrentGpsAsLocation(prefix){const box=$(prefix+'GpsBox');const lat=box.dataset.lat,lon=box.dataset.lon;const code=$(prefix+'GpsCode').value.trim();const name=$(prefix+'GpsName').value.trim();if(!lat||!lon){alert('Hämta position först.');return}if(!code||!name){alert('Lokalkod och lokalnamn krävs.');return}const loc={id:uid(),code,name,lat,lon,source:'Egna lokaler',importedAt:new Date().toISOString()};const all=getLocations();all.push(loc);setLocations(all);refreshLocationDatalist();$(prefix+'Location').value=locationDisplay(loc);updateLocationInfo(prefix);box.style.display='none';toast('Lokal sparad')}
 
-        /* small text under art field for species info */
-        .species-info {
-            font-size: 14px;
-            margin: 5px 0;
-            color: #555;
-        }
-
-        /* Align save and home buttons in a row and style them consistently */
-        .button-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .button-row .save-btn,
-        .button-row .home-btn {
-            flex: 1;
-            padding: 10px 15px;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-        }
-        .button-row .save-btn {
-            background-color: #28a745;
-            color: #fff;
-        }
-        .button-row .home-btn {
-            background-color: #dc3545;
-            color: #fff;
-            margin-left: 10px;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>KimBird RM</h1>
-    </header>
-    <main>
-        <div id="home">
-            <h2>Startsida</h2>
-            <a href="#newMarking" class="button">Ny märkning</a>
-            <a href="#newControl" class="button">Ny kontroll</a>
-            <a href="#locations" class="button">Lokaler</a>
-            <a href="#ringStock" class="button">Ringförråd</a>
-            <a href="#reports" class="button">Rapporter</a>
-        </div>
-
-        <div id="newMarking" style="display:none;">
-            <h2>Ny märkning</h2>
-            <form id="markForm">
-                <label for="markRing">Ringnummer</label>
-                <input type="text" id="markRing" name="ring" required>
-
-                <label for="markDate">Datum</label>
-                <input type="date" id="markDate" name="date" required>
-
-                <label for="markTime">Tid</label>
-                <input type="time" id="markTime" name="time">
-
-                <label for="markArt">Art</label>
-                <input type="text" id="markArt" name="art" list="speciesList" autocomplete="off">
-                <div id="markSpeciesInfo" class="species-info"></div>
-
-                <label for="markAge">Ålder</label>
-                <select id="markAge" name="age">
-                    <option value="00">00</option>
-                    <option value="1+">1+</option>
-                    <option value="1K">1K</option>
-                    <option value="2+">2+</option>
-                    <option value="2K">2K</option>
-                    <option value="3+">3+</option>
-                    <option value="3K">3K</option>
-                </select>
-
-                <label for="markMarker">Märkare</label>
-                <select id="markMarker" name="marker"></select>
-                <button type="button" id="addMarkerBtn" style="margin-bottom:10px;">Ny märkare</button>
-
-                <label for="markLocation">Plats</label>
-                <input type="text" id="markLocation" name="location">
-
-                <label for="markWing">Vinge (mm)</label>
-                <input type="number" id="markWing" name="wing">
-
-                <label for="markWeight">Vikt (g)</label>
-                <input type="number" id="markWeight" name="weight">
-
-                <label for="markBill" id="markBillLabel" style="display:none;">Näbblängd (mm)</label>
-                <input type="number" id="markBill" name="bill" style="display:none;">
-
-                <label for="markImage">Lägg till bild</label>
-                <input type="file" id="markImage" name="image" accept="image/*">
-
-                <label><input type="checkbox" id="markStar" name="star"> Följ upp</label>
-
-                <label for="markComment">Kommentar</label>
-                <textarea id="markComment" name="comment" rows="3"></textarea>
-
-                <div class="button-row">
-                    <button type="submit" class="save-btn">Spara</button>
-                    <button type="button" class="home-btn" onclick="goHome()">Hem</button>
-                </div>
-            </form>
-        </div>
-
-        <div id="newControl" style="display:none;">
-            <h2>Ny kontroll</h2>
-            <form id="controlForm">
-                <label for="controlRing">Ringnummer</label>
-                <input type="text" id="controlRing" name="ring" required>
-
-                <label for="controlDate">Datum</label>
-                <input type="date" id="controlDate" name="date" required>
-
-                <label for="controlTime">Tid</label>
-                <input type="time" id="controlTime" name="time">
-
-                <label for="controlArt">Art</label>
-                <input type="text" id="controlArt" name="art" list="speciesList" autocomplete="off">
-                <div id="controlSpeciesInfo" class="species-info"></div>
-
-                <label for="controlAge">Ålder</label>
-                <select id="controlAge" name="age">
-                    <option value="00">00</option>
-                    <option value="1+">1+</option>
-                    <option value="1K">1K</option>
-                    <option value="2+">2+</option>
-                    <option value="2K">2K</option>
-                    <option value="3+">3+</option>
-                    <option value="3K">3K</option>
-                </select>
-
-                <label for="controlMarker">Märkare</label>
-                <select id="controlMarker" name="marker"></select>
-                <button type="button" id="addControlMarkerBtn" style="margin-bottom:10px;">Ny märkare</button>
-
-                <label for="controlLocation">Plats</label>
-                <input type="text" id="controlLocation" name="location">
-
-                <label for="controlWing">Vinge (mm)</label>
-                <input type="number" id="controlWing" name="wing">
-
-                <label for="controlWeight">Vikt (g)</label>
-                <input type="number" id="controlWeight" name="weight">
-
-                <label for="controlBill" id="controlBillLabel" style="display:none;">Näbblängd (mm)</label>
-                <input type="number" id="controlBill" name="bill" style="display:none;">
-
-                <label for="controlImage">Lägg till bild</label>
-                <input type="file" id="controlImage" name="image" accept="image/*">
-
-                <label><input type="checkbox" id="controlStar" name="star"> Följ upp</label>
-
-                <label for="controlComment">Kommentar</label>
-                <textarea id="controlComment" name="comment" rows="3"></textarea>
-
-                <div class="button-row">
-                    <button type="submit" class="save-btn">Spara</button>
-                    <button type="button" class="home-btn" onclick="goHome()">Hem</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Locations page -->
-        <div id="locations" style="display:none;">
-            <h2>Lokaler</h2>
-            <ul id="locationList"></ul>
-            <button onclick="goHome()">Hem</button>
-        </div>
-
-        <div id="ringStock" style="display:none;">
-            <h2>Ringförråd</h2>
-            <p>Denna sektion visar dina ringar och deras status.</p>
-            <button onclick="goHome()">Hem</button>
-        </div>
-
-        <div id="reports" style="display:none;">
-            <h2>Rapporter</h2>
-            <p>Månadsrapport och årsrapport kommer snart.</p>
-            <button onclick="goHome()">Hem</button>
-        </div>
-
-        <!-- Datalist for species autocomplete. This list is populated via JavaScript -->
-        <datalist id="speciesList"></datalist>
-    </main>
-
-    <script>
-        function showPage(pageId) {
-            ['home','newMarking','newControl','ringStock','reports','locations'].forEach(function(id) {
-                document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
-            });
-        }
-        function goHome() { showPage('home'); }
-        document.querySelectorAll('a.button').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const page = this.getAttribute('href').substring(1);
-                showPage(page);
-            });
-        });
-        // Data for species: name, abbreviation and recommended ring sizes (type1, type2)
-        var speciesData = /* Generated from Excel art list with ring types */ [
-            {"name":"Smålom","abbr":"SMLOM","type1":"91","type2":""},{"name":"Storlom","abbr":"STLOM","type1":"92","type2":""},{"name":"Smådopping","abbr":"SMDOP","type1":"7","type2":""},{"name":"Skäggdopping","abbr":"SKDOP","type1":"91","type2":""},{"name":"Gråhakedopping","abbr":"GRDOP","type1":"91","type2":""},{"name":"Svarthakedopping","abbr":"POAUR","type1":"8","type2":""},{"name":"Svarthalsad dopping","abbr":"PONIG","type1":"8","type2":""},{"name":"Stormfågel","abbr":"STFÅG","type1":"7","type2":""},{"name":"Stormsvala","abbr":"STSVA","type1":"2","type2":""},{"name":"Havssula","abbr":"HASUL","type1":"92","type2":""},{"name":"Storskarv","abbr":"PHCAR","type1":"92","type2":""},{"name":"Rördrom","abbr":"RÖDRO","type1":"91","type2":""},{"name":"Gråhäger","abbr":"HÄGER","type1":"92","type2":"91"},{"name":"Vit stork","abbr":"VSSTO","type1":"92,5","type2":""},{"name":"Knölsvan","abbr":"KNÖLS","type1":"99","type2":""},{"name":"Mindre sångsvan","abbr":"MINSÅ","type1":"99","type2":""},{"name":"Sångsvan","abbr":"SÅNGS","type1":"99","type2":""},{"name":"Sädgås","abbr":"SÄDGÅ","type1":"92,5","type2":""},{"name":"Spetsbergsgås","abbr":"SPEGÅ","type1":"91","type2":""},{"name":"Bläsgås","abbr":"BLÄSG","type1":"91","type2":""},{"name":"Fjällgås","abbr":"FJÄLLG","type1":"91","type2":""},{"name":"Grågås","abbr":"GRÅGÅ","type1":"92,5","type2":"92"},{"name":"Kanadagås","abbr":"KANAG","type1":"92,5","type2":""},{"name":"Vitkindadgås","abbr":"VKGÅS","type1":"91","type2":""},{"name":"Prutgås","abbr":"PRUTG","type1":"91","type2":""},{"name":"Gravand","abbr":"GRAVA","type1":"90","type2":""},{"name":"Bläsand","abbr":"BLÄSA","type1":"8","type2":""},{"name":"Snatterand","abbr":"SNATT","type1":"8","type2":""},{"name":"Kricka","abbr":"KRICK","type1":"7","type2":""},{"name":"Gräsand","abbr":"GRÄSA","type1":"90","type2":""},{"name":"Stjärtand","abbr":"STJÄT","type1":"90","type2":"8"},{"name":"Årta","abbr":"ÅRTA","type1":"7","type2":""},{"name":"Skedand","abbr":"SKEDA","type1":"8","type2":""},{"name":"Brunand","abbr":"BRUNA","type1":"90","type2":""},{"name":"Vigg","abbr":"VIGG","type1":"8","type2":"90"},{"name":"Bergand","abbr":"BERGA","type1":"8","type2":""},{"name":"Ejder","abbr":"EJDER","type1":"91","type2":""},{"name":"Alfågel","abbr":"ALFÅG","type1":"8","type2":""},{"name":"Sjöorre","abbr":"SJÖOR","type1":"90","type2":""},{"name":"Svärta","abbr":"SVÄRT","type1":"90","type2":""},{"name":"Knipa","abbr":"KNIPA","type1":"90","type2":"8"},{"name":"Salskrake","abbr":"SALS","type1":"8","type2":""},{"name":"Småskrake","abbr":"SMÅSK","type1":"90","type2":""},{"name":"Storskrake","abbr":"STOSK","type1":"91","type2":""},{"name":"Bivråk","abbr":"BIVRÅ","type1":"90","type2":"91"},{"name":"Brun glada","abbr":"BRUGL","type1":"90","type2":""},{"name":"Röd glada","abbr":"RÖDGL","type1":"90","type2":""},{"name":"Havsörn","abbr":"HAVSÖ","type1":"94","type2":"99"},{"name":"Brun kärrhök","abbr":"BRUNK","type1":"8","type2":"90"},{"name":"Blå kärrhök","abbr":"BLÅKÄ","type1":"7","type2":"8"},{"name":"Stäpphök","abbr":"STÄPP","type1":"6","type2":""},{"name":"Ängshök","abbr":"ÄNGSH","type1":"7","type2":"6"},{"name":"Duvhök","abbr":"DUVHÖ","type1":"90","type2":"91"},{"name":"Sparvhök","abbr":"SPARV","type1":"5","type2":"6"},{"name":"Ormvråk","abbr":"ORMVR","type1":"90","type2":""},{"name":"Fjällvråk","abbr":"FJÄLLV","type1":"91","type2":""},{"name":"Kungsörn","abbr":"KUNGSÖ","type1":"94","type2":"99"},{"name":"Fiskgjuse","abbr":"FISKGJ","type1":"92","type2":""},{"name":"Tornfalk","abbr":"TOFAL","type1":"7","type2":"6"},{"name":"Aftonfalk","abbr":"AFTOF","type1":"5","type2":""},{"name":"Stenfalk","abbr":"STENF","type1":"6","type2":""},{"name":"Lärkfalk","abbr":"LÄRKF","type1":"6","type2":""},{"name":"Jaktfalk","abbr":"JAKTF","type1":"91","type2":""},{"name":"Pilgrimsfalk","abbr":"PILGR","type1":"90","type2":""},{"name":"Järpe","abbr":"JÄRPE","type1":"7","type2":""},{"name":"Dalripa","abbr":"DALRI","type1":"8","type2":""},{"name":"Fjällripa","abbr":"FJÄLLRI","type1":"8","type2":""},{"name":"Orre","abbr":"ORRE","type1":"90","type2":"8"},{"name":"Tjäder","abbr":"TJÄDER","type1":"93","type2":"92"},{"name":"Rapphöna","abbr":"RAPPH","type1":"7","type2":""},{"name":"Vaktel","abbr":"VAKTEL","type1":"5","type2":""},{"name":"Vattenrall","abbr":"VATRA","type1":"6","type2":"5"},{"name":"Småfläckig sumphöna","abbr":"SMÅSU","type1":"5","type2":""},{"name":"Mindre sumphöna","abbr":"MINSU","type1":"5","type2":""},{"name":"Dvärgsumphöna","abbr":"DVÄRGSU","type1":"5","type2":""},{"name":"Kornknarr","abbr":"KORNK","type1":"6","type2":""},{"name":"Rörhöna","abbr":"RÖRHÖ","type1":"8","type2":""},{"name":"Sothöna","abbr":"SOTHÖ","type1":"90","type2":""},{"name":"Trana","abbr":"TRANA","type1":"93","type2":""},{"name":"Strandskata","abbr":"STRANS","type1":"8","type2":""},{"name":"Skärfläcka","abbr":"SKÄRFL","type1":"7","type2":"6"},{"name":"Mindre strandpipare","abbr":"MSTPI","type1":"2","type2":""},{"name":"Större strandpipare","abbr":"STSTR","type1":"3","type2":""},{"name":"Svartbent strandpipare","abbr":"SVBSTP","type1":"3","type2":""},{"name":"Fjällpipare","abbr":"FJÄLLP","type1":"4","type2":""},{"name":"Ljungpipare","abbr":"LJUNGP","type1":"5","type2":""},{"name":"Kustpipare","abbr":"KUSTPI","type1":"5","type2":""},{"name":"Tofsvipa","abbr":"TOVIP","type1":"6","type2":""},{"name":"Kustsnäppa","abbr":"KUSTSN","type1":"4","type2":""},{"name":"Sandlöpare","abbr":"SANDL","type1":"3","type2":""},{"name":"Småsnäppa","abbr":"SMÅSN","type1":"2","type2":""},{"name":"Mosnäppa","abbr":"MOSNÄ","type1":"2","type2":""},{"name":"Spovsnäppa","abbr":"SPOVSN","type1":"3","type2":""},{"name":"Skärsnäppa","abbr":"SKÄRSN","type1":"4","type2":""},{"name":"Kärrsnäppa","abbr":"KÄRSN","type1":"3","type2":""},{"name":"Myrsnäppa","abbr":"MYRSN","type1":"3","type2":""},{"name":"Brushane","abbr":"BRUSH","type1":"6","type2":"5"},{"name":"Dvärgbeckasin","abbr":"LYMIN","type1":"4","type2":""},{"name":"Enkelbeckasin","abbr":"ENBEC","type1":"4","type2":""},{"name":"Dubbelbeckasin","abbr":"DUBBEC","type1":"5","type2":""},{"name":"Morkulla","abbr":"MORKUL","type1":"6","type2":""},{"name":"Rödspov","abbr":"RÖDSP","type1":"7","type2":""},{"name":"Myrspov","abbr":"MYRSP","type1":"6","type2":""},{"name":"Småspov","abbr":"SMÅSP","type1":"7","type2":""},{"name":"Storspov","abbr":"STORSP","type1":"8","type2":""},{"name":"Svartsnäppa","abbr":"SVARTA","type1":"5","type2":""},{"name":"Grönbena","abbr":"GRÖNBE","type1":"4","type2":""},{"name":"Roskarl","abbr":"ROSKA","type1":"4","type2":""},{"name":"Smalnäbbad simsnäppa","abbr":"SMALSI","type1":"3","type2":""},{"name":"Kustlabb","abbr":"KUSTLAB","type1":"7","type2":""},{"name":"Fjällabb","abbr":"FJÄLLAB","type1":"6","type2":""},{"name":"Dvärgmås","abbr":"DVÄRGMA","type1":"4","type2":""},{"name":"Skrattmås","abbr":"SKRAT","type1":"6","type2":""},{"name":"Fiskmås","abbr":"FISKMA","type1":"7","type2":""},{"name":"Silltrut","abbr":"SILLTR","type1":"8","type2":""},{"name":"Gråtrut","abbr":"GRÅTRU","type1":"90S","type2":""},{"name":"Praktärla","abbr":"PRAKTÄ","type1":"0","type2":""} ];
-
-        // Populate species datalist options
-        var speciesListElement = document.getElementById('speciesList');
-        speciesData.forEach(function(item) {
-            var opt = document.createElement('option');
-            opt.value = item.name;
-            // Some browsers show the label for datalist options
-            opt.label = item.name + ' (' + item.abbr + ')';
-            speciesListElement.appendChild(opt);
-        });
-
-        // Define markers list and populate marker selects
-        var markers = ['Kim'];
-        function populateMarkerSelects() {
-            var selects = [];
-            var markSel = document.getElementById('markMarker');
-            if (markSel) selects.push(markSel);
-            var controlSel = document.getElementById('controlMarker');
-            if (controlSel) selects.push(controlSel);
-            selects.forEach(function(sel) {
-                sel.innerHTML = '';
-                markers.forEach(function(m) {
-                    var opt = document.createElement('option');
-                    opt.value = m;
-                    opt.textContent = m;
-                    sel.appendChild(opt);
-                });
-            });
-        }
-        populateMarkerSelects();
-        // Add new marker events
-        var addMarkBtn = document.getElementById('addMarkerBtn');
-        if (addMarkBtn) {
-            addMarkBtn.addEventListener('click', function() {
-                var name = prompt('Ange märkare:');
-                if (name) {
-                    markers.push(name);
-                    populateMarkerSelects();
-                    document.getElementById('markMarker').value = name;
-                }
-            });
-        }
-        var addControlMarkBtn = document.getElementById('addControlMarkerBtn');
-        if (addControlMarkBtn) {
-            addControlMarkBtn.addEventListener('click', function() {
-                var name = prompt('Ange märkare:');
-                if (name) {
-                    markers.push(name);
-                    populateMarkerSelects();
-                    document.getElementById('controlMarker').value = name;
-                }
-            });
-        }
-
-        // Species info update and bill field toggle
-        function updateSpeciesInfo(inputId, infoId, billLabelId, billInputId) {
-            var input = document.getElementById(inputId);
-            var infoDiv = document.getElementById(infoId);
-            var billLabel = document.getElementById(billLabelId);
-            var billInput = document.getElementById(billInputId);
-            if (!input) return;
-            input.addEventListener('input', function() {
-                var val = input.value.trim();
-                var lower = val.toLowerCase();
-                var sp = speciesData.find(function(item) {
-                    return item.name.toLowerCase() === lower;
-                });
-                if (sp) {
-                    var ring = sp.type1;
-                    if (sp.type2 && sp.type2.trim() !== '') {
-                        ring = ring + ' (' + sp.type2 + ')';
-                    }
-                    infoDiv.textContent = sp.abbr + ' – Rek. ring: ' + ring;
-                    // Determine if bill measurement should be shown
-                    var billSpecies = ['dvärgbeckasin','enkelbeckasin','skogssnäppa'];
-                    if (billSpecies.includes(lower)) {
-                        billLabel.style.display = 'block';
-                        billInput.style.display = 'block';
-                    } else {
-                        billLabel.style.display = 'none';
-                        billInput.style.display = 'none';
-                    }
-                } else {
-                    infoDiv.textContent = '';
-                    billLabel.style.display = 'none';
-                    billInput.style.display = 'none';
-                }
-            });
-        }
-        updateSpeciesInfo('markArt','markSpeciesInfo','markBillLabel','markBill');
-        updateSpeciesInfo('controlArt','controlSpeciesInfo','controlBillLabel','controlBill');
-        document.getElementById('markForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Märkning sparad (prototyp).');
-            goHome();
-        });
-        document.getElementById('controlForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Kontroll sparad (prototyp).');
-            goHome();
-        });
-
-        // Populate locations list from predefined array. In a full implementation this could be loaded from a database or Excel file.
-        (function populateLocations() {
-            // Extracted from the user's Excel file (2025 and 2026 sheets) and combined with
-            // earlier examples. Each entry is trimmed and capitalised. Duplicate spellings
-            // (e.g. Fröjerum/Fröjerum ) have been normalised.
-            var localities = [
-                'Aspa',
-                'FTIN5',
-                'Borgsholm',
-                'Braskens',
-                'Fröjerum',
-                'Herrebro',
-                'Kaga',
-                'Klinga',
-                'Kniberga',
-                'Knivberga',
-                'Löt',
-                'Mellby',
-                'Resebro',
-                'Åsebro',
-                'Össby'
-        ];
-        // Add any additional species that were omitted from the generated list
-        speciesData.push({name:'Kungsfiskare', abbr:'KUFIS', type1:'3', type2:''});
-        speciesData.push({name:'Skogssnäppa', abbr:'TROCH', type1:'4', type2:''});
-            var ul = document.getElementById('locationList');
-            if (ul) {
-                localities.forEach(function(loc) {
-                    var li = document.createElement('li');
-                    li.textContent = loc;
-                    ul.appendChild(li);
-                });
-            }
-        })();
-    </script>
-</body>
-</html>
+function updateSpeciesInfo(prefix){const art=$(prefix+'Art').value;const sp=findSpecies(art);const div=$(prefix+'SpeciesInfo');const billWrap=$(prefix+'BillWrap');div.textContent=sp?sp.abbr+' – Rek. ring: '+ringText(sp):'';const longBill=['dvärgbeckasin','enkelbeckasin','skogssnäppa'];billWrap.style.display=longBill.includes((art||'').trim().toLowerCase())?'block':'none'}function gather(prefix,type,id){const sp=findSpecies($(prefix+'Art').value);const marker=getMarkers().find(m=>m.id===$(prefix+'Marker').value)||{};const img=$(prefix+'Image').files[0];const old=id?getRecords().find(r=>r.id===id):null;const loc=findLocationByDisplay($(prefix+'Location').value)||{};const todoOpen=$(prefix+'TodoOpen')?$(prefix+'TodoOpen').checked:false;const todo=todoOpen?{open:true,done:false,type:$(prefix+'TodoType').value,priority:$(prefix+'TodoPriority').value||'normal',due:$(prefix+'TodoDue').value,text:$(prefix+'TodoText').value.trim(),createdAt:old&&old.todo?old.todo.createdAt:new Date().toISOString(),doneAt:''}:(old&&old.todo?{...old.todo,open:false,done:old.todo.done||false}:null);return{id:id||uid(),type,broodCount:$(prefix+'BroodCount')?$(prefix+'BroodCount').value:'',broodStart:$(prefix+'Ring').value.trim(),art:$(prefix+'Art').value.trim(),artAbbr:sp?sp.abbr:'',ringSize:sp?ringText(sp):'',ring:$(prefix+'Ring').value.trim(),date:$(prefix+'Date').value,time:$(prefix+'Time').value,markerId:$(prefix+'Marker').value,markerCode:marker.code||'',markerName:((marker.first||'')+' '+(marker.last||'')).trim(),gender:$(prefix+'Gender').value,age:$(prefix+'Age').value,wing:$(prefix+'Wing').value,weight:$(prefix+'Weight').value,location:$(prefix+'Location').value.trim(),locationCode:loc.code||'',locationName:loc.name||'',lat:loc.lat||'',lon:loc.lon||'',locationSource:loc.source||'',bill:$(prefix+'Bill')?$(prefix+'Bill').value:'',imageName:img?img.name:(old?old.imageName:''),imageYes:!!(img||(old&&old.imageName)),star:todoOpen,todo,comment:$(prefix+'Comment').value.trim(),createdAt:old?old.createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}}
+function makeBroodId(rec){const base=(rec.locationCode||rec.locationName||rec.location||rec.artAbbr||rec.art||'KULL').toString().replace(/\s+/g,'').replace(/[^\wÅÄÖåäö-]/g,'').slice(0,18)||'KULL';const d=(rec.date||todayISO()).replaceAll('-','');const existing=getRecords().filter(r=>r.broodId&&String(r.broodId).includes(base+'-'+d)).length;return base+'-'+d+'-'+String(existing+1).padStart(3,'0')}
+function saveBirdRecord(prefix,type,id){const rec=gather(prefix,type,id);if(!rec.art||!rec.ring||!rec.date){alert('Art, ringnummer och datum måste anges.');return}let data=getRecords();if(!id&&rec.age==='00'){const count=Number($(prefix+'BroodCount')?$(prefix+'BroodCount').value:0);if(count>1){if(!/^\d+$/.test(rec.ring)){alert('Ringnummer måste vara numeriskt för automatisk kullregistrering.');return}if(!ringSuffixOk(rec.ring,count)){alert('Ringserien passerar slutsiffra 99. Välj nästa serie eller dela upp kullen.');return}const startNo=Number(rec.ring);const broodId=makeBroodId(rec);const rows=[];for(let i=0;i<count;i++){rows.push({...rec,id:uid(),ring:String(startNo+i),broodId,broodIndex:i+1,broodCount:String(count),comment:(rec.comment||'')+(rec.comment?' · ':'')+'Kull '+broodId+', unge '+(i+1)+'/'+count,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()})}data=data.concat(rows);setRecords(data);toast(count+' ungar sparade: '+rec.ring+'–'+String(startNo+count-1));currentEditId=rows[0].id;renderReports();renderHomeStats();goHome();return}}if(id)data=data.map(r=>r.id===id?rec:r);else data.push(rec);setRecords(data);toast((type==='control'?'Kontroll':'Märkning')+' sparad till rapporter');currentEditId=rec.id;renderReports();renderHomeStats();goHome()}
+function setReportRange(mode){reportMode=mode;renderReports()}function applyMonthYearFilter(){reportMode='custom';renderReports()}function startOfWeek(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x}function filterRecords(){const all=getRecords().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));const now=new Date();let rows=all;if(reportMode==='today')rows=all.filter(r=>r.date===todayISO());else if(reportMode==='week'){const s=startOfWeek(now);rows=all.filter(r=>{const d=new Date(r.date+'T00:00');return d>=s&&d<=now})}else if(reportMode==='month')rows=all.filter(r=>{const d=new Date(r.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()});else if(reportMode==='year')rows=all.filter(r=>new Date(r.date).getFullYear()===now.getFullYear());else if(reportMode==='custom'){const m=Number($('reportMonth').value)-1;const y=Number($('reportYear').value);rows=all.filter(r=>{const d=new Date(r.date);return d.getMonth()===m&&d.getFullYear()===y})}const q=($('reportSearch')?.value||'').trim().toLowerCase();if(q)rows=rows.filter(r=>[r.ring,r.art,r.artAbbr,r.markerCode,r.markerName,r.location,r.comment].join(' ').toLowerCase().includes(q));return rows}
+function renderReports(){const data=filterRecords();const meta={today:'Dagens',week:'Veckans',month:'Månadens',year:'Årets',custom:'Filtrerade'}[reportMode]||'Rapport';$('reportMeta').textContent=`${meta} poster: ${data.length}`;const el=$('reportList');if(!data.length){el.innerHTML='<div class="card">Inga poster.</div>';return}el.innerHTML=data.map(r=>{const typeLabel=r.type==='control'?'🟠 Kontroll':'🟢 Ny märkning';const cls=r.type==='control'?'card-control':'card-marking';return `<div class="card ${cls}" onclick="openEdit('${r.id}')"><div class="card-title">${typeLabel}</div><div style="font-size:18px;font-weight:700">${r.art||''} ${r.artAbbr?`(${r.artAbbr})`:''}</div><div class="hint">Ring ${r.ring||''} · ${r.date||''} ${r.time||''}</div><div><span class="pill">Märkare ${r.markerCode||''}</span><span class="pill">Ringtyp ${r.ringSize||''}</span>${r.imageYes?'<span class="pill">📷 Bild</span>':'<span class="pill">Ingen bild</span>'}${r.todo&&r.todo.open&&!r.todo.done?'<span class="pill">📋 Att göra</span>':''}${r.broodId?'<span class="pill">🐣 Kull '+r.broodId+'</span>':''}${r.parentFemaleRing?'<span class="pill">♀ '+r.parentFemaleRing+'</span>':''}${r.parentMaleRing?'<span class="pill">♂ '+r.parentMaleRing+'</span>':''}</div><div class="grid"><div>Ålder: ${r.age||''}</div><div>Kön: ${r.gender||''}</div><div>Vinge: ${r.wing||''}</div><div>Vikt: ${r.weight||''}</div><div>Plats: ${r.locationName||r.location||''}</div><div>Kod: ${r.locationCode||''}</div><div>Lat/lon: ${r.lat?Number(r.lat).toFixed(5)+', '+Number(r.lon).toFixed(5):''}</div><div>Näbb: ${r.bill||''}</div></div>${r.comment?`<div class="hint">Kommentar: ${r.comment}</div>`:''}<div class="hint">Tryck för att ändra/radera.</div></div>`}).join('')}function openEdit(id){const rec=getRecords().find(r=>r.id===id);if(!rec)return;currentEditId=id;buildBirdForm('editForm','edit',rec.type,rec);showPage('editRecord')}function searchRecordByRing(){const q=$('searchRing').value.trim().toLowerCase();if(!q){$('searchResults').innerHTML='<div class="card">Skriv ringnummer, art eller plats.</div>';return}const hits=getRecords().filter(r=>[r.ring,r.art,r.artAbbr,r.markerCode,r.markerName,r.location,r.date].join(' ').toLowerCase().includes(q));$('searchResults').innerHTML=hits.length?hits.map(r=>`<div class="card ${r.type==='control'?'card-control':'card-marking'}" onclick="openEdit('${r.id}')"><div class="card-title">${r.ring} · ${r.art} · ${r.date} ${r.time||''}</div><div class="hint">${r.type==='control'?'Kontroll':'Märkning'} · ${r.location||''} · klicka för att ändra.</div></div>`).join(''):'<div class="card">Ingen träff.</div>'}function deleteCurrentRecord(){if(!currentEditId)return;if(!confirm('Radera denna märkning/kontroll?'))return;setRecords(getRecords().filter(r=>r.id!==currentEditId));toast('Post raderad');currentEditId=null;renderReports();showPage('reports')}function parseGPXText(text,sourceName){const doc=new DOMParser().parseFromString(text,'application/xml');if(doc.querySelector('parsererror'))throw new Error('GPX kunde inte läsas');const wpts=[...doc.getElementsByTagName('wpt')];return wpts.map(w=>{function txt(tag){const e=w.getElementsByTagName(tag)[0];return e?e.textContent.trim():''}const code=txt('name');const name=txt('cmt')||txt('desc')||code;return{id:uid(),code:code||'',name:name||'',lat:w.getAttribute('lat')||'',lon:w.getAttribute('lon')||'',source:sourceName||'GPX',importedAt:new Date().toISOString()}}).filter(l=>l.lat&&l.lon&&(l.code||l.name))}
+function importGPXFile(e){const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.name.toLowerCase().endsWith('.gpx')&&!confirm('Filen verkar inte sluta på .gpx. Försöka importera ändå?'))return;const reader=new FileReader();reader.onload=function(){try{const imported=parseGPXText(reader.result,file.name.replace(/\.gpx$/i,''));if(!imported.length){alert('Inga waypoints hittades i GPX-filen.');return}let existing=getLocations();let map=new Map(existing.map(l=>[(l.source+'|'+l.code+'|'+l.name),l]));imported.forEach(l=>map.set(l.source+'|'+l.code+'|'+l.name,l));setLocations([...map.values()].sort((a,b)=>(a.source+a.code+a.name).localeCompare(b.source+b.code+b.name)));refreshLocationDatalist();renderLocations();toast(imported.length+' lokaler importerade') }catch(err){alert('Kunde inte läsa GPX-filen: '+err.message)}};reader.readAsText(file);e.target.value=''}
+function renderLocations(){const el=$('locationList');const stats=$('locationStats');if(!el)return;const q=($('locationSearch')?.value||'').trim().toLowerCase();let locs=getLocations().sort((a,b)=>(a.source+a.code+a.name).localeCompare(b.source+b.code+b.name));if(q)locs=locs.filter(l=>[l.code,l.name,l.source,l.lat,l.lon].join(' ').toLowerCase().includes(q));stats.textContent='Lokaler: '+locs.length+' / '+getLocations().length;el.innerHTML=locs.length?locs.map(l=>`<div class="card loc-card"><div class="card-title">${l.code||''} · ${l.name||''}</div><div class="hint">${l.source||''}</div><div class="grid"><div>Lat: ${l.lat}</div><div>Lon: ${l.lon}</div></div><a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.lat+','+l.lon)}">Visa i Google Maps</a><div class="row"><button class="btn-small btn-gray" onclick="exportLocationGPX('${l.id}')">Exportera GPX</button><button class="btn-small btn-red" onclick="deleteLocation('${l.id}')">Ta bort</button></div></div>`).join(''):'<div class="card">Inga lokaler importerade.</div>'}
+function locationToGPX(l){return `<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="KimBird RM" xmlns="http://www.topografix.com/GPX/1/1">\n  <wpt lat="${escapeXml(l.lat)}" lon="${escapeXml(l.lon)}">\n    <name>${escapeXml(l.code)}</name>\n    <cmt>${escapeXml(l.name)}</cmt>\n    <desc>${escapeXml(l.name)}</desc>\n  </wpt>\n</gpx>\n`}
+function exportLocationGPX(id){const l=getLocations().find(x=>x.id===id);if(!l)return;downloadText('KimBird_lokal_'+(l.code||'lokal')+'.gpx',locationToGPX(l),'application/gpx+xml;charset=utf-8');toast('Lokal exporterad som GPX')}
+function exportAllLocationsGPX(){const locs=getLocations();if(!locs.length){alert('Inga lokaler att exportera.');return}const body=locs.map(l=>`  <wpt lat="${escapeXml(l.lat)}" lon="${escapeXml(l.lon)}">\n    <name>${escapeXml(l.code)}</name>\n    <cmt>${escapeXml(l.name)}</cmt>\n    <desc>${escapeXml(l.name)}</desc>\n  </wpt>`).join('\n');downloadText('KimBird_lokaler_'+todayISO()+'.gpx',`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="KimBird RM" xmlns="http://www.topografix.com/GPX/1/1">\n${body}\n</gpx>\n`,'application/gpx+xml;charset=utf-8');toast('Alla lokaler exporterade')}
+function deleteLocation(id){if(!confirm('Ta bort denna lokal från appen?'))return;setLocations(getLocations().filter(l=>l.id!==id));refreshLocationDatalist();renderLocations()}
+function clearLocations(){if(!confirm('Rensa alla importerade lokaler?'))return;setLocations([]);refreshLocationDatalist();renderLocations();toast('Lokaler rensade')}
+function csvCell(v){v=(v??'').toString();return '"'+v.replaceAll('"','""')+'"'}
+function exportCSV(mode){let data=getRecords();let suffix='allt';if(mode==='visible'){data=filterRecords();suffix='visad_rapport'}else if(mode==='marking'){data=data.filter(r=>r.type==='marking');suffix='markningar'}else if(mode==='control'){data=data.filter(r=>r.type==='control');suffix='kontroller'}const cols=['typ','ringnummer','art','artförkortning','ringtyp','datum','tid','märkare_förkortning','märkare_namn','kön','ålder','vinge','vikt','plats','lokalkod','lokalnamn','lat','lon','lokalfil','kull_id','unge_nr','antal_ungar','förälder_hona_ring','förälder_hona_notering','förälder_hane_ring','förälder_hane_notering','näbblängd','bild','bildfil','att_göra_öppen','att_göra_klar','uppgiftstyp','prioritet','förfallodatum','uppgiftskommentar','kommentar','skapad','ändrad','post_id'];const rows=[cols.join(';')].concat(data.map(r=>[r.type,r.ring,r.art,r.artAbbr,r.ringSize,r.date,r.time,r.markerCode,r.markerName,r.gender,r.age,r.wing,r.weight,r.location,r.locationCode,r.locationName,r.lat,r.lon,r.locationSource,r.broodId||'',r.broodIndex||'',r.broodCount||'',r.parentFemaleRing||'',r.parentFemaleNote||'',r.parentMaleRing||'',r.parentMaleNote||'',r.bill,r.imageYes?'Ja':'Nej',r.imageName,r.todo&&r.todo.open?'Ja':'Nej',r.todo&&r.todo.done?'Ja':'Nej',r.todo?r.todo.type:'',r.todo?r.todo.priority:'',r.todo?r.todo.due:'',r.todo?r.todo.text:'',r.comment,r.createdAt,r.updatedAt,r.id].map(csvCell).join(';')));downloadText('KimBird_export_'+suffix+'_'+todayISO()+'.csv','\ufeff'+rows.join('\n'),'text/csv;charset=utf-8');toast('CSV exporterad')}
+function downloadText(filename,text,type){const blob=new Blob([text],{type:type||'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportBackup(){const backup={app:'KimBird RM',version:'0.7c',exportedAt:new Date().toISOString(),records:getRecords(),markers:getMarkers(),locations:getLocations()};downloadText('KimBird_backup_'+todayISO()+'.json',JSON.stringify(backup,null,2),'application/json;charset=utf-8');toast('Backup exporterad')}
+function importBackupFile(e){const file=e.target.files&&e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(){try{const data=JSON.parse(reader.result);if(!Array.isArray(data.records)||!Array.isArray(data.markers)){alert('Filen verkar inte vara en giltig KimBird-backup.');return}if(!confirm('Importera backup? Detta ersätter lokala märkningar och märkare på denna enhet.'))return;setRecords(data.records);setMarkers(data.markers);setLocations(Array.isArray(data.locations)?data.locations:getLocations());refreshLocationDatalist();populateMarkerSelects();renderHomeStats();toast('Backup importerad');showPage('home')}catch(err){alert('Kunde inte läsa JSON-filen.')}};reader.readAsText(file);e.target.value=''}
+function clearRecordsOnly(){if(!confirm('Radera alla märkningar och kontroller på denna enhet?'))return;if(!confirm('Sista kontrollen: detta går inte att ångra utan backup.'))return;setRecords([]);renderReports();renderHomeStats();toast('Märkningar/kontroller raderade');showPage('home')}
+function clearAllLocalData(){if(!confirm('Radera ALL appdata på denna enhet? Märkare och märkningar försvinner.'))return;if(!confirm('Sista kontrollen: exportera backup först om du vill kunna återställa.'))return;localStorage.removeItem('kimbird_records');localStorage.removeItem('kimbird_markers');localStorage.removeItem('kimbird_locations');refreshLocationDatalist();populateMarkerSelects();renderHomeStats();toast('All lokal appdata raderad');showPage('home')}
+function getBroodGroups(){const groups={};getRecords().filter(r=>r.broodId).forEach(r=>{if(!groups[r.broodId])groups[r.broodId]=[];groups[r.broodId].push(r)});return Object.values(groups).map(rows=>{rows.sort((a,b)=>Number(a.broodIndex||0)-Number(b.broodIndex||0)||String(a.ring).localeCompare(String(b.ring)));const first=rows[0]||{};return{id:first.broodId,rows,art:first.art,artAbbr:first.artAbbr,date:first.date,location:first.locationName||first.location||'',locationCode:first.locationCode||'',lat:first.lat||'',lon:first.lon||'',count:rows.length,startRing:rows[0]?.ring||'',endRing:rows[rows.length-1]?.ring||''}}).sort((a,b)=>(b.date||'').localeCompare(a.date||''))}
+function broodParentData(id){const rows=getRecords().filter(r=>r.broodId===id);const first=rows[0]||{};return{femaleRing:first.parentFemaleRing||'',femaleNote:first.parentFemaleNote||'',maleRing:first.parentMaleRing||'',maleNote:first.parentMaleNote||''}}
+function saveBroodParents(id){const female=$('parentFemaleRing').value.trim();const femaleNote=$('parentFemaleNote').value.trim();const male=$('parentMaleRing').value.trim();const maleNote=$('parentMaleNote').value.trim();let rows=getRecords().map(r=>{if(r.broodId===id){r.parentFemaleRing=female;r.parentFemaleNote=femaleNote;r.parentMaleRing=male;r.parentMaleNote=maleNote;r.updatedAt=new Date().toISOString()}return r});setRecords(rows);toast('Föräldrar kopplade till kullen');openBrood(id)}
+function clearBroodParents(id){if(!confirm('Ta bort föräldrakoppling från denna kull?'))return;let rows=getRecords().map(r=>{if(r.broodId===id){r.parentFemaleRing='';r.parentFemaleNote='';r.parentMaleRing='';r.parentMaleNote='';r.updatedAt=new Date().toISOString()}return r});setRecords(rows);toast('Föräldrakoppling borttagen');openBrood(id)}
+function openParentRecord(ring){if(!ring){alert('Inget ringnummer angivet.');return}const hit=getRecords().find(r=>String(r.ring).toLowerCase()===String(ring).toLowerCase());if(hit)openEdit(hit.id);else alert('Hittar ingen sparad märkning/kontroll med ringnummer '+ring+'. Du kan skapa den via Ny märkning/Ny kontroll och sedan koppla igen.')}
+function renderBroods(){const q=($('broodSearch')?.value||'').trim().toLowerCase();let groups=getBroodGroups();if(q)groups=groups.filter(g=>[g.id,g.art,g.artAbbr,g.location,g.locationCode,g.startRing,g.endRing,g.rows.map(r=>r.ring).join(' ')].join(' ').toLowerCase().includes(q));$('broodMeta').textContent='Kullar: '+groups.length;const el=$('broodList');if(!groups.length){el.innerHTML='<div class="card">Inga kullar registrerade.</div>';return}el.innerHTML=groups.map(g=>`<div class="card brood-card" onclick="openBrood('${g.id}')"><div class="card-title">🐣 ${g.id}</div><div style="font-weight:700">${g.art||''} ${g.artAbbr?`(${g.artAbbr})`:''}</div><div class="hint">${g.date||''} · ${g.location||''}</div><div><span class="pill">${g.count} ungar</span><span class="pill">${g.startRing}–${g.endRing}</span>${g.locationCode?`<span class="pill">${g.locationCode}</span>`:''}</div></div>`).join('')}
+function openBrood(id){const g=getBroodGroups().find(x=>x.id===id);if(!g)return;const p=broodParentData(id);const el=$('broodDetailContent');el.innerHTML=`<div class="card brood-card"><div class="card-title">🐣 ${g.id}</div><div style="font-size:18px;font-weight:700">${g.art||''} ${g.artAbbr?`(${g.artAbbr})`:''}</div><div class="hint">${g.date||''} · ${g.location||''}</div><div class="grid"><div>Antal: ${g.count}</div><div>Ringar: ${g.startRing}–${g.endRing}</div><div>Lokalkod: ${g.locationCode||''}</div><div>Lat/lon: ${g.lat?Number(g.lat).toFixed(5)+', '+Number(g.lon).toFixed(5):''}</div></div></div><div class="parent-box"><h3>Föräldrar</h3><label>Hona ringnummer</label><input id="parentFemaleRing" value="${p.femaleRing||''}" placeholder="Ringnummer hona"><label>Anteckning hona</label><input id="parentFemaleNote" value="${p.femaleNote||''}" placeholder="t.ex. märkt tidigare / fångad 16 juni"><div class="row"><button class="btn-small btn-gray" onclick="openParentRecord(document.getElementById('parentFemaleRing').value)">Öppna hona</button></div><label>Hane ringnummer</label><input id="parentMaleRing" value="${p.maleRing||''}" placeholder="Ringnummer hane"><label>Anteckning hane</label><input id="parentMaleNote" value="${p.maleNote||''}" placeholder="t.ex. kontroll / märkt vid bobesök"><div class="row"><button class="btn-small btn-gray" onclick="openParentRecord(document.getElementById('parentMaleRing').value)">Öppna hane</button></div><div class="row"><button class="btn-green" onclick="saveBroodParents('${g.id}')">Spara föräldrar</button><button class="btn-red" onclick="clearBroodParents('${g.id}')">Rensa</button></div><div class="hint">Föräldrarna sparas på alla ungar i kullen. Om föräldern märks senare: skapa märkningen först och koppla sedan ringnumret här.</div></div><h3>Ungar</h3>`+g.rows.map(r=>`<div class="card" onclick="openEdit('${r.id}')"><div class="card-title">${r.broodIndex||''}/${r.broodCount||g.count} · Ring ${r.ring}</div><div class="grid"><div>Ålder: ${r.age||''}</div><div>Kön: ${r.gender||''}</div><div>Vinge: ${r.wing||''}</div><div>Vikt: ${r.weight||''}</div><div>Hona: ${r.parentFemaleRing||''}</div><div>Hane: ${r.parentMaleRing||''}</div></div><div class="hint">Tryck för att ändra individ.</div></div>`).join('');showPage('broodDetail')}
+let todoFilter='open';function setTodoFilter(f){todoFilter=f;renderTodo()}
+function todoRows(){let rows=getRecords().filter(r=>r.todo);if(todoFilter==='open')rows=rows.filter(r=>r.todo.open&&!r.todo.done);if(todoFilter==='done')rows=rows.filter(r=>r.todo.done);if(todoFilter==='high')rows=rows.filter(r=>r.todo.open&&!r.todo.done&&(r.todo.priority==='hög'||r.todo.priority==='akut'));const prioRank=p=>p==='akut'?0:p==='hög'?1:2;return rows.sort((a,b)=>(prioRank(a.todo.priority)-prioRank(b.todo.priority))||((a.todo.due||'9999').localeCompare(b.todo.due||'9999'))||((a.date||'').localeCompare(b.date||'')))}
+function renderTodo(){const rows=todoRows();const open=getRecords().filter(r=>r.todo&&r.todo.open&&!r.todo.done).length;if($('todoCountHome'))$('todoCountHome').textContent='('+open+')';$('todoMeta').textContent='Att göra: '+rows.length+' · öppna totalt: '+open;const el=$('todoList');if(!rows.length){el.innerHTML='<div class="card">Inga uppgifter.</div>';return}const today=todayISO();el.innerHTML=rows.map(r=>{const t=r.todo||{};const overdue=t.due&&t.due<today&&!t.done;const pr=t.priority==='akut'?'⭐⭐⭐':t.priority==='hög'?'⭐⭐':'⭐';return `<div class="card todo-card ${t.priority==='akut'||overdue?'todo-high':''} ${t.done?'todo-done':''}"><div class="card-title">${pr} ${t.type||'Uppgift'} ${overdue?'· försenad':''}</div><div style="font-weight:700">${r.art||''} ${r.artAbbr?`(${r.artAbbr})`:''} · Ring ${r.ring||''}</div><div class="hint">${r.date||''} ${r.time||''} · ${r.locationName||r.location||''}</div><div>${t.text||r.comment||''}</div><div class="hint">Förfallodatum: ${t.due||'Ej satt'}</div><div class="row"><button class="btn-small btn-green" onclick="completeTodo('${r.id}')">Klar</button><button class="btn-small btn-gray" onclick="openEdit('${r.id}')">Öppna</button></div></div>`}).join('')}
+function completeTodo(id){let rows=getRecords();rows=rows.map(r=>{if(r.id===id&&r.todo){r.todo.done=true;r.todo.open=false;r.todo.doneAt=new Date().toISOString();r.star=false;r.updatedAt=new Date().toISOString()}return r});setRecords(rows);renderTodo();renderHomeStats();toast('Uppgift klar')}
+let editingMarkerId=null;function renderMarkers(){const list=$('markerList');const m=getMarkers();list.innerHTML=m.map(x=>`<div class="card"><div class="card-title">${x.code} – ${x.first} ${x.last}</div><div class="row"><button class="btn-small" onclick="editMarker('${x.id}')">Ändra</button><button class="btn-small btn-red" onclick="deleteMarker('${x.id}')">Ta bort</button></div></div>`).join('')||'<div class="card">Inga märkare.</div>';populateMarkerSelects()}function saveMarker(){const first=$('markerFirst').value.trim();const last=$('markerLast').value.trim();const code=$('markerCode').value.trim().toUpperCase();if(!first||!code){alert('Förnamn och förkortning krävs.');return}let arr=getMarkers();if(editingMarkerId)arr=arr.map(m=>m.id===editingMarkerId?{...m,first,last,code}:m);else arr.push({id:uid(),first,last,code});setMarkers(arr);editingMarkerId=null;$('markerFirst').value='';$('markerLast').value='';$('markerCode').value='';renderMarkers();toast('Märkare sparad')}function editMarker(id){const m=getMarkers().find(x=>x.id===id);if(!m)return;editingMarkerId=id;$('markerFirst').value=m.first;$('markerLast').value=m.last;$('markerCode').value=m.code;window.scrollTo(0,0)}function deleteMarker(id){if(!confirm('Ta bort märkare? Gamla rapportposter behåller sparad förkortning.'))return;setMarkers(getMarkers().filter(m=>m.id!==id));renderMarkers()}function populateMarkerSelects(){const html=getMarkers().map(m=>`<option value="${m.id}">${m.code} – ${m.first} ${m.last}</option>`).join('');['markMarker','controlMarker','editMarker'].forEach(id=>{const el=$(id);if(el)el.innerHTML=html})}
+initLists();buildBirdForm('markForm','mark','marking',null);buildBirdForm('controlForm','control','control',null);setReportRange('month');renderHomeStats();
+</script></body></html>
